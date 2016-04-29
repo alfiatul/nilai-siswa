@@ -40,6 +40,8 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('list-guru', 'GuruController@getList');
     Route::get('list-jurusan', 'JurusanController@getList');
     Route::get('list-kelas', 'KelasController@getList');
+    Route::get('list-siswa', 'SiswaController@getList');
+    Route::get('list-siswa-by-kelas/{kelas}', 'SiswaController@getListBykelas');
     //
     Route::resource('siswa', 'SiswaController');
     Route::resource('nilai', 'NilaiController');

@@ -34,6 +34,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
     public function create(array $data)
     {
         try {
+            $na = (0.5 * (e($data['n_tugas']))) + (0.2 * (e($data['n_uts']))) + (0.3 * (e($data['n_uas'])));
             $nilai = parent::create(
                 [
                     'id_siswa' => e($data['id_siswa']),
@@ -41,7 +42,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
                     'n_tugas'  => e($data['n_tugas']),
                     'n_uts'    => e($data['n_uts']),
                     'n_uas'    => e($data['n_uas']),
-                    'n_akhir'  => e($data['n_akhir']),
+                    'n_akhir'  => $na,
                 ]
             );
             // flush cache with tags
@@ -59,14 +60,12 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
     {
 
         try {
-
+            $na = (0.5 * (e($data['n_tugas']))) + (0.2 * (e($data['n_uts']))) + (0.3 * (e($data['n_uas'])));
             $nilai = parent::update($id, [
-                'id_siswa'   => e($data['id_siswa']),
-                'kode_mapel' => e($data['kode_mapel']),
-                'n_tugas'    => e($data['n_tugas']),
-                'n_uts'      => e($data['n_uts']),
-                'n_uas'      => e($data['n_uas']),
-                'n_akhir'    => e($data['n_akhir']),
+                'n_tugas' => e($data['n_tugas']),
+                'n_uts'   => e($data['n_uts']),
+                'n_uas'   => e($data['n_uas']),
+                'n_akhir' => $na,
             ]);
 
             // flush cache with tags

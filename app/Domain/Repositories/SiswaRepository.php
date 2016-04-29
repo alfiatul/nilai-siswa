@@ -120,4 +120,44 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
 
         return $organisasi;
     }
+
+    public function getList()
+    {
+        // set key
+        $key = 'siswa-get-list';
+
+        // has section and key
+        if ($this->cache->has(Siswa::$tags, $key)) {
+            return $this->cache->get(Siswa::$tags, $key);
+        }
+
+        // query to sql
+        $data = $this->model->get();
+
+        // store to cache
+        $this->cache->put(Siswa::$tags, $key, $data, 10);
+
+        return $data;
+    }
+
+    public function getListBykelas($id)
+    {
+        // set key
+        $key = 'siswa-get-list-by-kelas' . $id;
+
+        // has section and key
+        if ($this->cache->has(Siswa::$tags, $key)) {
+            return $this->cache->get(Siswa::$tags, $key);
+        }
+
+        // query to sql
+        $data = $this->model
+            ->where('id_kelas', $id)
+            ->get();
+
+        // store to cache
+//        $this->cache->put(Siswa::$tags, $key, $data, 10);
+
+        return $data;
+    }
 }

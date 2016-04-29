@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div class="block" style="margin-left: 260px;">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-primary" type="submit" id="Simpan">Simpan</button>
                                     &nbsp;&nbsp;
                                     <button class="btn btn-primary" onclick="index()">Kembali</button>
                                 </div>
@@ -163,7 +163,7 @@
                                     </div>
                                 </div>
                                 <div class="block" style="margin-left: 260px;">
-                                    <button class="btn btn-primary" type="submit">Simpan</button>
+                                    <button class="btn btn-primary" type="submit" id="Edit">Edit</button>
                                     &nbsp;&nbsp;
                                     <button class="btn btn-primary" onclick="index()">Kembali</button>
                                 </div>

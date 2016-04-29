@@ -46,4 +46,14 @@ class SiswaController extends Controller
     {
         return $this->siswa->delete($id);
     }
+
+    public function getList()
+    {
+        return $this->siswa->getList();
+    }
+
+    public function getListBykelas($id)
+    {
+        return $this->siswa->getListBykelas($id);
+    }
 }

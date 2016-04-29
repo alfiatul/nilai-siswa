@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 class NilaiRequest extends Request
 {
     protected $attrs = [
-        'nis'      => '',
+        'id_siswa' => '',
         'id_mapel' => '',
         'n_tugas'  => '',
         'n_uts'    => '',
@@ -20,12 +20,12 @@ class NilaiRequest extends Request
     public function rules()
     {
         return [
-            'nis'      => 'required',
-            'id_mapel' => 'required',
+            'id_siswa' => '',
+            'id_mapel' => '',
             'n_tugas'  => 'required',
             'n_uts'    => 'required',
             'n_uas'    => 'required',
-            'n_akhir'  => 'required',
+            'n_akhir'  => '',
         ];
     }
 
@@ -40,7 +40,7 @@ class NilaiRequest extends Request
         return [
             'success'    => false,
             'validation' => [
-                'nis'      => $message->first('nis'),
+                'id_siswa' => $message->first('id_siswa'),
                 'id_mapel' => $message->first('id_mapel'),
                 'n_tugas'  => $message->first('n_tugas'),
                 'n_uts'    => $message->first('n_uts'),

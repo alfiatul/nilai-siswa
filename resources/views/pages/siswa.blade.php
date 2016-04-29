@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="block" style="margin-left: 260px;">
-                                    <button class="btn btn-primary" type="submit">Simpan</button>
+                                    <button class="btn btn-primary" type="submit" id="Simpan">Simpan</button>
                                     &nbsp;&nbsp;
                                     <button class="btn btn-primary" onclick="index()">Kembali</button>
                                 </div>
@@ -234,9 +234,16 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-                    jk = $form.find("input[name='jk']").val(),
+//                    jk = $form.find("input[name='jk']").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
+
+            if (document.getElementById("laki").checked = true) {
+                var jk = 'L';
+            }
+            if (document.getElementById("perempuan").checked = true) {
+                var jk = 'P';
+            }
 
             var posting = $.post('/api/v1/siswa', {
                 id_kelas: id_kelas,
@@ -261,9 +268,16 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-                    jk = $form.find("input[name='jk']").val(),
+//                    jk = $form.find("input[name='jk']").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
+
+            if (document.getElementById("laki").checked = true) {
+                var jk = 'L';
+            }
+            if (document.getElementById("perempuan").checked = true) {
+                var jk = 'P';
+            }
 
             currentRequest = $.ajax({
                 method: "PUT",
@@ -315,7 +329,7 @@
                 })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
-                    $("input[name='nis']").val(data_edit.id_mapel);
+                    $("input[name='nis']").val(data_edit.nis);
                     $("input[name='nama']").val(data_edit.nama);
                     $("input[name='alamat']").val(data_edit.alamat);
                     $("input[name='agama']").val(data_edit.agama);
@@ -332,10 +346,10 @@
                         var jumlah = data.length;
                         $.each(data.slice(0, jumlah), function (i, data) {
                             if (data_edit.kelas.id == data.id) {
-                                $("select[name='kelas']").append("<option value='" + data.id + "' selected>" + data.kelas + "</option>");
+                                $("select[name='kelas']").append("<option value='" + data.id + "' selected>" + data.kelas + " " + data.jurusan.jurusan + "</option>");
                             }
                             else {
-                                $("select[name='kelas']").append("<option value='" + data.id + "'>" + data.kelas + "</option>");
+                                $("select[name='kelas']").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>");
                             }
                         })
                     })

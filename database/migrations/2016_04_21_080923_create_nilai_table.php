@@ -20,7 +20,7 @@ class CreateNilaiTable extends Migration
             $table->double('n_uts');
             $table->double('n_uas');
             $table->double('n_akhir');
-            $table->primary('id_siswa');
+            $table->primary('id');
             $table->timestamps();
         });
     }
