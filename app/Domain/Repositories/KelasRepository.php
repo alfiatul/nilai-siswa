@@ -19,7 +19,7 @@ class KelasRepository extends AbstractRepository implements Paginable, Crudable
 {
     protected $cache;
 
-    public function __construct(kelas $kelas, Cacheable $cache)
+    public function __construct(Kelas $kelas, Cacheable $cache)
     {
         $this->model = $kelas;
         $this->cache = $cache;
@@ -107,9 +107,13 @@ class KelasRepository extends AbstractRepository implements Paginable, Crudable
 
         // query to sql
         $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
+//        $data = $this->model
+//            ->where('kelas', $search)
+//            ->paginate($limit)
+//            ->toArray();
 
         // store to cache
-        $this->cache->put(Kelas::$tags, $key, $organisasi, 10);
+//        $this->cache->put(Kelas::$tags, $key, $organisasi, 10);
 
         return $organisasi;
     }

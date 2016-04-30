@@ -38,10 +38,12 @@
                         <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">
                             <i class="fa fa-refresh"></i>
                         </button>
-                        <div class="col-md-4 pull-right">
-                            <div class="input-group">
-                                <input type="text" class="form-control timepicker24">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <div class="input-group col-md-3 push-down-10 pull-right">
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                         <table class="table table-hover ">
@@ -297,7 +299,8 @@
     }
 
     function getMapel() {
-        $('#list_mapel').children().remove();
+        $('#id_mapel').children().remove();
+        $("#id_mapel").append("<option>Pilih Bidang Strudy</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -355,6 +358,32 @@
         setTimeout(function () {
             $.getJSON("/api/v1/guru", function (data) {
 //                console.log(data);
+                var jumlah = data.data.length;
+                $.each(data.data.slice(0, jumlah), function (i, data) {
+                    $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                            "<td>" + data.nama + "</td>" +
+                            "<td>" + data.alamat + "</td>" +
+                            "<td>" + data.mapel.mapel + "</td>" +
+                            "<td>" + data.no_hp + "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
+                })
+            });
+        }, 2200);
+    }
+
+    function getData(page) {
+        $("#row").children().remove();
+//        $("#pagination").children().remove();
+        var term = $("#search").val();
+        $("#loader2").delay(2000).animate({
+            opacity: 0,
+            width: 0,
+            height: 0
+        }, 500);
+        setTimeout(function () {
+            $.getJSON("/api/v1/guru?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +

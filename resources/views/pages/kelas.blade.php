@@ -37,14 +37,12 @@
                         <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">
                             <i class="fa fa-refresh"></i>
                         </button>
-                        {{--<form role="form">--}}
-                        {{--<input type="text" name="search" placeholder="Search..."/>--}}
-                        {{--</form>--}}
+                        <div class="input-group col-md-3 push-down-10 pull-right">
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
 
-                        <div class="col-md-4 pull-right">
-                            <div class="input-group">
-                                <input type="text" class="form-control timepicker24">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                         <table class="table table-hover ">
@@ -274,7 +272,8 @@
     }
 
     function getJurusan() {
-        $('#list_jurusan').children().remove();
+        $('#id_jurusan').children().remove();
+        $("#id_jurusan").append("<option>Pilih Jurusan</option>")
         $.getJSON("/api/v1/list-jurusan", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -301,7 +300,7 @@
     }
     function getAjax() {
         $("#row").children().remove();
-
+        var cari = $("#search").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -310,6 +309,48 @@
         setTimeout(function () {
             $.getJSON("/api/v1/kelas", function (data) {
                 var jumlah = data.data.length;
+                $.each(data.data.slice(0, jumlah), function (i, data) {
+                    $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                            "<td>" + data.kelas + " " + data.jurusan.jurusan + "</td>" +
+                            "<td>" + data.jml + "</td>" +
+                            "<td><button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
+                })
+            });
+        }, 2200);
+    }
+
+    function getData(page) {
+        $("#row").children().remove();
+//        $("#pagination").children().remove();
+        var term = $("#search").val();
+        $("#loader2").delay(2000).animate({
+            opacity: 0,
+            width: 0,
+            height: 0
+        }, 500);
+        setTimeout(function () {
+            $.getJSON("/api/v1/kelas?page=" + page + "&term=" + term, function (data) {
+                var jumlah = data.data.length;
+//                var jml_hal = Math.ceil(data.total / 10);
+//                $("#pagination").append("Showing " + data.from + "to " + data.to + " of " + data.total + " entries");
+//                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+//
+//                if (data.last_page > 1) {
+//                    for (var i = 1; i <= data.last_page; i++) {
+//                        if (data.current_page == i) {
+//                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+//                        }
+//                        else {
+//                            $(".pagination-sm").append("<li><a href='#'>" + i + " </a></li>");
+//                        }
+//                     }
+//                }
+//                else {
+//                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+//                }
+//                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.kelas + " " + data.jurusan.jurusan + "</td>" +

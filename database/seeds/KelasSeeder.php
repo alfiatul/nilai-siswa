@@ -14,15 +14,15 @@ class KelasSeeder extends Seeder
 
         DB::table('kelas')->truncate();
         DB::table('kelas')->insert([
-            ['id' => '1', 'id_jurusan' => '1', 'kelas' => 'X', 'jml' => '30'],
-            ['id' => '2', 'id_jurusan' => '1', 'kelas' => 'XI', 'jml' => '30'],
-            ['id' => '3', 'id_jurusan' => '1', 'kelas' => 'XII', 'jml' => '30'],
-            ['id' => '4', 'id_jurusan' => '2', 'kelas' => 'X', 'jml' => '30'],
-            ['id' => '5', 'id_jurusan' => '2', 'kelas' => 'XI', 'jml' => '30'],
-            ['id' => '6', 'id_jurusan' => '2', 'kelas' => 'XII', 'jml' => '30'],
-            ['id' => '7', 'id_jurusan' => '3', 'kelas' => 'X', 'jml' => '30'],
-            ['id' => '8', 'id_jurusan' => '3', 'kelas' => 'XI', 'jml' => '30'],
-            ['id' => '9', 'id_jurusan' => '3', 'kelas' => 'XII', 'jml' => '30'],
+            ['id' => '1', 'id_jurusan' => '1', 'kelas' => '10', 'jml' => '30'],
+            ['id' => '2', 'id_jurusan' => '1', 'kelas' => '11', 'jml' => '30'],
+            ['id' => '3', 'id_jurusan' => '1', 'kelas' => '12', 'jml' => '30'],
+            ['id' => '4', 'id_jurusan' => '2', 'kelas' => '10', 'jml' => '30'],
+            ['id' => '5', 'id_jurusan' => '2', 'kelas' => '11', 'jml' => '30'],
+            ['id' => '6', 'id_jurusan' => '2', 'kelas' => '12', 'jml' => '30'],
+            ['id' => '7', 'id_jurusan' => '3', 'kelas' => '11', 'jml' => '30'],
+            ['id' => '8', 'id_jurusan' => '3', 'kelas' => '11', 'jml' => '30'],
+            ['id' => '9', 'id_jurusan' => '3', 'kelas' => '12', 'jml' => '30'],
         ]);
     }
 }

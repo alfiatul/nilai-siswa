@@ -37,14 +37,12 @@
                         <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">
                             <i class="fa fa-refresh"></i>
                         </button>
-                        {{--<form role="form">--}}
-                        {{--<input type="text" name="search" placeholder="Search..."/>--}}
-                        {{--</form>--}}
+                        <div class="input-group col-md-3 push-down-10 pull-right">
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
 
-                        <div class="col-md-4 pull-right">
-                            <div class="input-group">
-                                <input type="text" class="form-control timepicker24">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                         <table class="table table-hover ">
@@ -309,6 +307,7 @@
         getAjax();
     }
 
+
     function Edit(id) {
         $('#Create').hide();
         $('#Edit').show();
@@ -331,6 +330,23 @@
                 });
     }
 
+    function Hapus(id) {
+        var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
+        if (result) {
+            $.ajax({
+                        method: "DELETE",
+                        url: '/api/v1/nilai/' + id,
+                        data: {}
+                    })
+
+                    .done(function (data) {
+                        window.alert(data.result.message);
+                        getAjax();
+                    });
+
+        }
+    }
+
     function getAjax() {
         $("#row").children().remove();
 
@@ -342,6 +358,58 @@
         setTimeout(function () {
             $.getJSON("/api/v1/nilai", function (data) {
 //                console.log(data);
+                var jumlah = data.data.length;
+                $.each(data.data.slice(0, jumlah), function (i, data) {
+                    if (data.n_akhir >= data.mapel.kkm) {
+//                        var ket = "Lulus";
+                        $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                                "<td>" + data.siswa.nis + "</td>" +
+                                "<td>" + data.siswa.nama + "</td>" +
+                                "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
+                                "<td>" + data.mapel.mapel + "</td>" +
+                                "<td>" + data.n_tugas + "</td>" +
+                                "<td>" + data.n_uts + "</td>" +
+                                "<td>" + data.n_uas + "</td>" +
+                                "<td>" + data.n_akhir + "</td>" +
+                                "<td><span class='label label-info label-form'>Lulus</span></td>" +
+                                "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+                                "</td></tr>");
+                    }
+                    else {
+                        $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                                "<td>" + data.siswa.nis + "</td>" +
+                                "<td>" + data.siswa.nama + "</td>" +
+                                "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
+                                "<td>" + data.mapel.mapel + "</td>" +
+                                "<td>" + data.n_tugas + "</td>" +
+                                "<td>" + data.n_uts + "</td>" +
+                                "<td>" + data.n_uas + "</td>" +
+                                "<td>" + data.n_akhir + "</td>" +
+                                "<td><span class='label label-danger label-form'>Remidi</span></td>" +
+                                "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+                                "</td></tr>");
+                    }
+
+                })
+            });
+        }, 2200);
+    }
+
+    function getData(page) {
+        $("#row").children().remove();
+//        $("#pagination").children().remove();
+        var term = $("#search").val();
+        $("#loader2").delay(2000).animate({
+            opacity: 0,
+            width: 0,
+            height: 0
+        }, 500);
+        setTimeout(function () {
+            $.getJSON("/api/v1/nilai?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     if (data.n_akhir >= data.mapel.kkm) {

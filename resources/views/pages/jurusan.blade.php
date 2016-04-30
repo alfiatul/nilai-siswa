@@ -41,10 +41,12 @@
                         {{--<input type="text" name="search" placeholder="Search..."/>--}}
                         {{--</form>--}}
 
-                        <div class="col-md-4 pull-right">
-                            <div class="input-group">
-                                <input type="text" class="form-control timepicker24">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                        <div class="input-group col-md-3 push-down-10 pull-right">
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                         <table class="table table-hover ">
@@ -235,7 +237,7 @@
     }
     function getAjax() {
         $("#row").children().remove();
-
+        var cari = $("#search").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -243,6 +245,28 @@
         }, 500);
         setTimeout(function () {
             $.getJSON("/api/v1/jurusan", function (data) {
+                var jumlah = data.data.length;
+                $.each(data.data.slice(0, jumlah), function (i, data) {
+                    $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                            "<td>" + data.jurusan+ "</td>" +
+                            "<td><button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
+                            " <button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
+                })
+            });
+        }, 2200);
+    }
+
+    function getData(page) {
+        $("#row").children().remove();
+//        $("#pagination").children().remove();
+        var term = $("#search").val();
+        $("#loader2").delay(2000).animate({
+            opacity: 0,
+            width: 0,
+            height: 0
+        }, 500);
+        setTimeout(function () {
+            $.getJSON("/api/v1/jurusan?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
