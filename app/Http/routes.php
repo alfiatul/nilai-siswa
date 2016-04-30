@@ -14,7 +14,9 @@
 Route::get('/', function () {
     return view('pages.index');
 });
-
+Route::get('/test', function () {
+    return view('pages.coba');
+});
 Route::get('/siswa', function () {
     return view('pages.siswa');
 });
