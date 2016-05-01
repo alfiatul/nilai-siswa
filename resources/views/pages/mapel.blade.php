@@ -78,14 +78,14 @@
                             <form id="Form-Create" role="form" class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Bidang Study:</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <input type="text" name="mapel"
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">KKM:</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <input type="text" name="kkm"
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
