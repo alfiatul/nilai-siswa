@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -47,9 +47,9 @@
                             </div>
                         </div>
                         {{--<div class="col-md-3 push-down-10 pull-right">--}}
-                            {{--<select class="form-control select" style="" name="kelas" id="id_kelas">--}}
-                                {{--<option>Pilih kelas</option>--}}
-                            {{--</select>--}}
+                        {{--<select class="form-control select" style="" name="kelas" id="id_kelas">--}}
+                        {{--<option>Pilih kelas</option>--}}
+                        {{--</select>--}}
                         {{--</div>--}}
                         <table class="table table-hover ">
                             <thead>
@@ -243,6 +243,32 @@
     </div>
 </div>
 
+{{--Detail--}}
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                    <fond face="Bernard MT">Detail Siswa</fond>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tbody id="modal-body">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="{!! asset('assets/js/plugins/jquery/jquery.min.js') !!}"></script>
 <script>
     $(document).ready(function () {
@@ -344,10 +370,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/siswa/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/siswa/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='nis']").val(data_edit.nis);
@@ -377,6 +403,33 @@
                 });
     }
 
+    function Detail(id) {
+        $("#modal-body").children().remove();
+        $.ajax({
+            method: "Get",
+            url: '/api/v1/siswa/' + id,
+            data: {},
+            beforeSend: function () {
+//                $('#loader-wrapper').show();
+            },
+            success: function (data) {
+//                $("#loader-wrapper").hide();
+                if (data.jk == 'L') {
+                    var jk = 'Laki-laki';
+                }
+                if (data.jk == 'P') {
+                    var jk = 'Perempuan';
+                }
+                $("#modal-body").append("<tr><td> NIS </td><td>: </td><td>" + data.nis + "</td></tr>" +
+                        "<tr><td> Nama </td><td> : </td><td>" + data.nama + "</td></tr>" +
+                        "<tr><td> Jenis Kelamin </td><td> : </td><td>" + jk + "</td></tr>" +
+                        "<tr><td> Agama </td><td> : </td><td>" + data.agama + "</td></tr>" +
+                        "<tr><td> Alamat </td><td> : </td><td>" + data.alamat + "</td></tr>"
+                );
+            }
+        });
+    }
+
     function index() {
         $('#Create').hide();
         $('#Edit').hide();
@@ -403,10 +456,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/siswa/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/siswa/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -415,27 +468,6 @@
 
         }
     }
-
-    //    function Detail(id) {
-    //        $("#modal-body").children().remove();
-    //        $.ajax({
-    //            method: "Get",
-    //            url: '/obat/' + id,
-    //            data: {},
-    //            beforeSend: function () {
-    //                $('#loader-wrapper').show();
-    //            },
-    //            success: function (data) {
-    //
-    //                $("#loader-wrapper").hide();
-    //                $("#modal-body").append("<tr><td>Nama Apoteker</td><td>: </td><td>" + data.apoteker.name + "</td></tr>" +
-    //                        "<tr><td>Alamat</td><td> : </td><td>" + data.apoteker.alamat + "</td></tr>" +
-    //                        "<tr><td>Nama Obat</td><td> : </td><td>" + data.nama_obat + "</td></tr>" +
-    //                        "<tr><td>Harga</td><td> : </td><td>" + data.harga + "</td></tr>"
-    //                );
-    //            }
-    //        });
-    //    }
 
     function getAjax() {
         $("#row").children().remove();
@@ -483,6 +515,7 @@
                             "<td>" + data.agama + "</td>" +
                             "<td>" + data.alamat + "</td>" +
                             "<td>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(" + data.id + ")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })
