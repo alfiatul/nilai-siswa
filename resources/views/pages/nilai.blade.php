@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -29,6 +29,7 @@
                         </div>
                     </center>
                     <br>
+
                     <div class="panel-body">
                         <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;"
                                 onclick="tambah()">
@@ -86,6 +87,7 @@
                             <form id="Form-Create" role="form" class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Kelas:</label>
+
                                     <div class="col-md-6">
                                         <select class="form-control select" style="" name="kelas" id="id_kelas"
                                                 onchange="getSiswa()">
@@ -95,6 +97,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nama:</label>
+
                                     <div class="col-md-6">
                                         <select class="form-control select" style="" name="siswa" id="id_siswa">
                                             <option>Pilih Nama Siswa</option>
@@ -103,6 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Bidang Study:</label>
+
                                     <div class="col-md-6">
                                         <select class="form-control select" style="" name="mapel" id="id_mapel">
                                             <option>Pilih Bidang Study</option>
@@ -111,6 +115,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai Tugas:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="tugas"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -118,6 +123,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai UTS:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="uts"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -125,6 +131,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai UAS:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="uas"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -157,8 +164,10 @@
                         <div class="block col-md-8">
                             <form id="Form-Edit" role="form" class="form-horizontal">
                                 <input type="hidden" name="id">
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nama:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="siswa"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"
@@ -167,6 +176,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Kelas:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="kelas"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"
@@ -175,6 +185,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Bidang Studi:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="mapel"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"
@@ -183,6 +194,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai Tugas:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="tugas"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -190,6 +202,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai UTS:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="uts"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -197,6 +210,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai UAS:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="uas"
                                                class="validate[required,custom[integer],min[18],max[120]] form-control"/>
@@ -302,6 +316,7 @@
         $('#Create').hide();
         $('#Edit').hide();
         $('#List').show();
+        $("#search").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();
@@ -315,10 +330,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/nilai/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/nilai/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='siswa']").val(data_edit.siswa.nama);
@@ -334,10 +349,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/nilai/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/nilai/' + id,
+                data: {}
+            })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -452,7 +467,8 @@
     }
 
     function getMapel() {
-        $('#list_mapel').children().remove();
+        $('#id_mapel').children().remove();
+        $("#id_mapel").append("<option>Pilih Bidang Strudy</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -462,7 +478,8 @@
     }
 
     function getKelas() {
-        $('#list_kelas').children().remove();
+        $('#id_kelas').children().remove();
+        $("#id_kelas").append("<option>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -475,6 +492,7 @@
         var $form = $("#Form-Create"),
                 kelas = $form.find("select[name='kelas']").val();
         $('#id_siswa').children().remove();
+        $("#id_siswa").append("<option>Pilih Siswa</option>")
         $.getJSON("/api/v1/list-siswa-by-kelas/" + kelas, function (data) {
             var jumlah = data.length;
             $("#id_siswa").append("<option> Pilih Nama Siswa </option>")

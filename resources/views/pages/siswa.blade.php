@@ -46,6 +46,11 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="col-md-3 push-down-10 pull-right">
+                            <select class="form-control select" style="" name="kelas" id="id_kelas">
+                                <option>Pilih kelas</option>
+                            </select>
+                        </div>
                         <table class="table table-hover ">
                             <thead>
                             <tr>
@@ -376,13 +381,16 @@
         $('#Create').hide();
         $('#Edit').hide();
         $('#List').show();
+        $("#search").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();
+        getKelas();
     }
 
     function getKelas() {
         $('#id_kelas').children().remove();
+        $("#id_kelas").append("<option value=''>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -486,13 +494,14 @@
         $("#row").children().remove();
         $("#pagination").children().remove();
         var term = $("#search").val();
+        var kelas = $("select[name='kelas']").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
             height: 0
         }, 500);
         setTimeout(function () {
-            $.getJSON("/api/v1/kelas?page=" + page + "&term=" + term, function (data) {
+            $.getJSON("/api/v1/siswa?page=" + page + "&term=" + term + "&kelas=" + kelas, function (data) {
                 var jumlah = data.data.length;
 
                 // Init pagination
@@ -515,10 +524,20 @@
                 $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
 
                 $.each(data.data.slice(0, jumlah), function (i, data) {
+                    if (data.jk == 'L') {
+                        jk = 'Laki-Laki';
+                    }
+                    if (data.jk == 'P') {
+                        jk = 'Perempuan';
+                    }
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
-                            "<td>" + data.kelas + " " + data.jurusan.jurusan + "</td>" +
-                            "<td>" + data.jml + "</td>" +
-                            "<td><button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+                            "<td>" + data.nama + "</td>" +
+                            "<td>" + data.kelas.kelas + " " + data.kelas.jurusan.jurusan + "</td>" +
+                            "<td>" + jk + "</td>" +
+                            "<td>" + data.agama + "</td>" +
+                            "<td>" + data.alamat + "</td>" +
+                            "<td>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })
             });

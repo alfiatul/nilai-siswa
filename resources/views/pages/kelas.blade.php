@@ -266,6 +266,7 @@
         $('#Create').hide();
         $('#Edit').hide();
         $('#List').show();
+        $("#search").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();

@@ -98,10 +98,10 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
     }
 
 
-    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '')
+    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '', $kelas = '')
     {
         // set key
-        $key = 'nilai-get-by-page' . $limit . $page . $search;
+        $key = 'nilai-get-by-page' . $limit . $page . $search . $kelas;
 
         // has section and key
         if ($this->cache->has(Nilai::$tags, $key)) {
@@ -109,9 +109,22 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
         }
 
         // query to sql
-//        $organisasi = parent::getByPage($limit, $page, $column, 'nis', $search);
-//        $data = $this->model->get();
-        $organisasi = $this->model->paginate($limit)->toArray();
+        if ($kelas == '' || $kelas == null) {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->where('siswa.id_kelas', $kelas)
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        }
 
         // store to cache
 //        $this->cache->put(Nilai::$tags, $key, $organisasi, 10);

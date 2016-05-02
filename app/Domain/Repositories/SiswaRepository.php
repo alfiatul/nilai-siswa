@@ -102,10 +102,10 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
     }
 
 
-    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '')
+    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '', $kelas = '')
     {
         // set key
-        $key = 'siswa-get-by-page' . $limit . $page . $search;
+        $key = 'siswa-get-by-page' . $limit . $page . $search . $kelas;
 
         // has section and key
         if ($this->cache->has(Siswa::$tags, $key)) {
@@ -113,12 +113,27 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
         }
 
         // query to sql
-        $organisasi = parent::getByPage($limit, $page, $column, 'nama', $search);
+//        $organisasi = parent::getByPage($limit, $page, $column, 'nama', $search);
+        if ($kelas == '' || $kelas == null) {
+
+            $data = $this->model
+                ->where('nama', 'like', '%' . $search . '%')
+                ->orderBy('nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else {
+            $data = $this->model
+                ->where('nama', 'like', '%' . $search . '%')
+                ->where('id_kelas', $kelas)
+                ->orderBy('nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        }
 
         // store to cache
-        $this->cache->put(Siswa::$tags, $key, $organisasi, 10);
+        $this->cache->put(Siswa::$tags, $key, $data, 10);
 
-        return $organisasi;
+        return $data;
     }
 
     public function getList()
