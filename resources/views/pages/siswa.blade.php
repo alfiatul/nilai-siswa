@@ -46,11 +46,11 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-3 push-down-10 pull-right">
-                            <select class="form-control select" style="" name="kelas" id="id_kelas">
-                                <option>Pilih kelas</option>
-                            </select>
-                        </div>
+                        {{--<div class="col-md-3 push-down-10 pull-right">--}}
+                            {{--<select class="form-control select" style="" name="kelas" id="id_kelas">--}}
+                                {{--<option>Pilih kelas</option>--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
                         <table class="table table-hover ">
                             <thead>
                             <tr>
@@ -385,7 +385,7 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();
-        getKelas();
+//        getKelas();
     }
 
     function getKelas() {
@@ -494,14 +494,14 @@
         $("#row").children().remove();
         $("#pagination").children().remove();
         var term = $("#search").val();
-        var kelas = $("select[name='kelas']").val();
+//        var kelas = $("select[name='kelas']").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
             height: 0
         }, 500);
         setTimeout(function () {
-            $.getJSON("/api/v1/siswa?page=" + page + "&term=" + term + "&kelas=" + kelas, function (data) {
+            $.getJSON("/api/v1/siswa?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
 
                 // Init pagination
