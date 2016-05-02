@@ -19,7 +19,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
 {
     protected $cache;
 
-    public function __construct(nilai $nilai, Cacheable $cache)
+    public function __construct(Nilai $nilai, Cacheable $cache)
     {
         $this->model = $nilai;
         $this->cache = $cache;

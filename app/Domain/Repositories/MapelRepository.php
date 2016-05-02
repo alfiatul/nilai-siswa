@@ -19,7 +19,7 @@ class MapelRepository extends AbstractRepository implements Paginable, Crudable
 {
     protected $cache;
 
-    public function __construct(mapel $mapel, Cacheable $cache)
+    public function __construct(Mapel $mapel, Cacheable $cache)
     {
         $this->model = $mapel;
         $this->cache = $cache;

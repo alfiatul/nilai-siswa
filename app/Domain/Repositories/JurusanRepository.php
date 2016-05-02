@@ -19,7 +19,7 @@ class JurusanRepository extends AbstractRepository implements Paginable, Crudabl
 {
     protected $cache;
 
-    public function __construct(jurusan $jurusan, Cacheable $cache)
+    public function __construct(Jurusan $jurusan, Cacheable $cache)
     {
         $this->model = $jurusan;
         $this->cache = $cache;

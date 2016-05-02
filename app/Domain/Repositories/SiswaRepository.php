@@ -19,7 +19,7 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
 {
     protected $cache;
 
-    public function __construct(siswa $siswa, Cacheable $cache)
+    public function __construct(Siswa $siswa, Cacheable $cache)
     {
         $this->model = $siswa;
         $this->cache = $cache;
