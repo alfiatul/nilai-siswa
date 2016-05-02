@@ -21,9 +21,9 @@
     <li>
         <a href="/"><span class="fa fa-desktop"></span> <span class="xn-text">Home</span></a>
     </li>
-    <li>
-        <a href="guru"><span class="fa fa-user"></span> <span class="xn-text">Guru</span></a>
-    </li>
+    {{--<li>--}}
+        {{--<a href="guru"><span class="fa fa-user"></span> <span class="xn-text">Guru</span></a>--}}
+    {{--</li>--}}
     <li>
         <a href="siswa"><span class="fa fa-users"></span><span class="xn-text">Siswa</span></a>
     </li>
