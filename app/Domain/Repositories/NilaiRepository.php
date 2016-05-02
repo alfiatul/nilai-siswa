@@ -113,6 +113,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
             $organisasi = $this->model
                 ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
                 ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->select('nilai.*')
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
                 ->toArray();
@@ -121,6 +122,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
                 ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
                 ->where('siswa.nama', 'like', '%' . $search . '%')
                 ->where('siswa.id_kelas', $kelas)
+                ->select('nilai.*')
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
                 ->toArray();
