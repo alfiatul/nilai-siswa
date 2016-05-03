@@ -9,7 +9,7 @@
         </a>
         <div class="profile">
             <div class="profile-image">
-                <img src="{!! asset('assets/assets/images/users/avatar.jpg') !!}" alt="John Doe"/>
+                <img src="{!! asset('assets/assets/images/users/user3.jpg') !!}" alt="John Doe"/>
             </div>
             <div class="profile-data">
                 <div class="profile-data-name">Alfiatul Azizah</div>
