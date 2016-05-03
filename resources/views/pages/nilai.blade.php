@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -31,13 +31,6 @@
                     <br>
 
                     <div class="panel-body">
-                        <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;"
-                                onclick="tambah()">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">
-                            <i class="fa fa-refresh"></i>
-                        </button>
                         <div class="input-group col-md-3 push-down-10 pull-right">
                             <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
 
@@ -361,10 +354,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/nilai/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/nilai/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='siswa']").val(data_edit.siswa.nama);
@@ -421,10 +414,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/nilai/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/nilai/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -456,7 +449,6 @@
                             $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
                         }
                         else {
-//                            $(".pagination-sm").append("<li><a onclick='getData(\"" + cari + "\"," + i + ")'> " + i + " </a></li>");
                             $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
                         }
                     }
@@ -479,8 +471,8 @@
                                 "<td><span class='label label-info label-form'>Lulus</span></td>" +
                                 "<td>" +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
                     }
                     else {
@@ -489,15 +481,12 @@
                                 "<td>" + data.siswa.nama + "</td>" +
                                 "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
                                 "<td>" + data.mapel.mapel + "</td>" +
-                                "<td>" + data.n_tugas + "</td>" +
-                                "<td>" + data.n_uts + "</td>" +
-                                "<td>" + data.n_uas + "</td>" +
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-danger label-form'>Remidi</span></td>" +
                                 "<td>" +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
                     }
 
@@ -548,14 +537,12 @@
                                 "<td>" + data.siswa.nama + "</td>" +
                                 "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
                                 "<td>" + data.mapel.mapel + "</td>" +
-                                "<td>" + data.n_tugas + "</td>" +
-                                "<td>" + data.n_uts + "</td>" +
-                                "<td>" + data.n_uas + "</td>" +
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-info label-form'>Lulus</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
                     }
                     else {
@@ -564,14 +551,12 @@
                                 "<td>" + data.siswa.nama + "</td>" +
                                 "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
                                 "<td>" + data.mapel.mapel + "</td>" +
-                                "<td>" + data.n_tugas + "</td>" +
-                                "<td>" + data.n_uts + "</td>" +
-                                "<td>" + data.n_uas + "</td>" +
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-danger label-form'>Remidi</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
                     }
 
@@ -582,7 +567,7 @@
 
     function getMapel() {
         $('#id_mapel').children().remove();
-        $("#id_mapel").append("<option>Pilih Bidang Strudy</option>")
+        $("#id_mapel").append("<option>Pilih Bidang Study</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {

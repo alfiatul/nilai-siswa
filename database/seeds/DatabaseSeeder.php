@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(NilaiSeeder::class);
         $this->call(KelasSeeder::class);
         $this->call(MapelSeeder::class);
+        $this->call(MengajarSeeder::class);
         $this->call(JurusanSeeder::class);
         Model::reguard();
     }

@@ -48,6 +48,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::resource('siswa', 'SiswaController');
     Route::resource('nilai', 'NilaiController');
     Route::resource('kelas', 'KelasController');
+    Route::resource('mengajar', 'MengajarController');
     Route::resource('mapel', 'MapelController');
     // get list mapel
     Route::get('list-mapel', 'MapelController@getList');

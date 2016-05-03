@@ -190,6 +190,33 @@
     </div>
 
 </div>
+
+{{--Detail--}}
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                    <fond face="Bernard MT">Detail Daftar Guru</fond>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tbody id="modal-body">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- END PAGE CONTENT WRAPPER -->
 <!-- END PAGE CONTENT -->
 <script type="text/javascript" src="{!! asset('assets/js/plugins/jquery/jquery.min.js') !!}"></script>
@@ -320,6 +347,27 @@
         })
     }
 
+    function Detail(id) {
+        $("#modal-body").children().remove();
+        $.ajax({
+            method: "Get",
+            url: '/api/v1/guru/' + id,
+            data: {},
+            beforeSend: function () {
+//                $('#loader-wrapper').show();
+            },
+            success: function (data) {
+//                $("#loader-wrapper").hide();
+                    $("#modal-body").append(
+                            "<tr><td> Nama </td><td> : </td><td>" + data.nama + "</td></tr>" +
+                            "<tr><td> Bidang Studi </td><td> : </td><td>" + data.mapel.mapel + "</td></tr>" +
+                            "<tr><td> Alamat </td><td> : </td><td>" + data.alamat + "</td></tr>" +
+                            "<tr><td> Telp </td><td> : </td><td>" + data.no_telp + "</td></tr>"
+                    );
+            }
+        });
+    }
+
     function Hapus(id) {
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
@@ -336,27 +384,6 @@
 
         }
     }
-
-    //    function Detail(id) {
-    //        $("#modal-body").children().remove();
-    //        $.ajax({
-    //            method: "Get",
-    //            url: '/obat/' + id,
-    //            data: {},
-    //            beforeSend: function () {
-    //                $('#loader-wrapper').show();
-    //            },
-    //            success: function (data) {
-    //
-    //                $("#loader-wrapper").hide();
-    //                $("#modal-body").append("<tr><td>Nama Apoteker</td><td>: </td><td>" + data.apoteker.name + "</td></tr>" +
-    //                        "<tr><td>Alamat</td><td> : </td><td>" + data.apoteker.alamat + "</td></tr>" +
-    //                        "<tr><td>Nama Obat</td><td> : </td><td>" + data.nama_obat + "</td></tr>" +
-    //                        "<tr><td>Harga</td><td> : </td><td>" + data.harga + "</td></tr>"
-    //                );
-    //            }
-    //        });
-    //    }
 
     function getAjax() {
         $("#row").children().remove();
@@ -377,6 +404,7 @@
                             "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })
@@ -403,6 +431,7 @@
                             "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
+                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })
