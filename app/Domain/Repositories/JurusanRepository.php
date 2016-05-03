@@ -102,12 +102,17 @@ class JurusanRepository extends AbstractRepository implements Paginable, Crudabl
         }
 
         // query to sql
-        $organisasi = parent::getByPage($limit, $page, $column, 'jurusan', $search);
+//        $organisasi = parent::getByPage($limit, $page, $column, 'jurusan', $search);
+        $data = $this->model
+            ->where('jurusan', 'like', '%' . $search . '%')
+            ->orderBy('jurusan', 'asc')
+            ->paginate($limit)
+            ->toArray();
 
         // store to cache
-        $this->cache->put(Jurusan::$tags, $key, $organisasi, 10);
+        $this->cache->put(Jurusan::$tags, $key, $data, 10);
 
-        return $organisasi;
+        return $data;
     }
 
     public function getList()

@@ -62,6 +62,10 @@
                             {{--looping data from ajax--}}
                             </tbody>
                         </table>
+
+                        <div id="pagination">
+
+                        </div>
                     </div>
                 </div>
 
@@ -242,7 +246,7 @@
     }
     function getAjax() {
         $("#row").children().remove();
-        var cari = $("#search").val();
+        $("#pagination").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -251,6 +255,26 @@
         setTimeout(function () {
             $.getJSON("/api/v1/jurusan", function (data) {
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.jurusan + "</td>" +
@@ -263,7 +287,7 @@
 
     function getData(page) {
         $("#row").children().remove();
-//        $("#pagination").children().remove();
+        $("#pagination").children().remove();
         var term = $("#search").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
@@ -273,6 +297,26 @@
         setTimeout(function () {
             $.getJSON("/api/v1/jurusan?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.jurusan + "</td>" +

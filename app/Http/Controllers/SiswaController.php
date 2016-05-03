@@ -24,7 +24,7 @@ class SiswaController extends Controller
 
     public function index(Request $request)
     {
-        return $this->siswa->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
+        return $this->siswa->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'), $request->input('kelas'));
     }
 
     public function store(SiswaRequest $request)

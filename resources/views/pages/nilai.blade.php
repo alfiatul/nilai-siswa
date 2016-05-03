@@ -46,6 +46,11 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="col-md-3 push-down-10 pull-right">
+                            <select class="form-control select kelas" style="" name="kelas">
+                                <option>Pilih kelas</option>
+                            </select>
+                        </div>
                         <table class="table table-hover ">
                             <thead>
                             <tr>
@@ -54,9 +59,6 @@
                                 <th>Nama</th>
                                 <th>Kelas</th>
                                 <th>Bidang Study</th>
-                                <th>Nilai Tugas</th>
-                                <th>Nilai UTS</th>
-                                <th>Nilai UAS</th>
                                 <th>Nilai Akhir</th>
                                 <th>Keterangan</th>
                                 <th>Aksi</th>
@@ -67,6 +69,10 @@
                             {{--looping data from ajax--}}
                             </tbody>
                         </table>
+
+                        <div id="pagination">
+                            {{--Pagination goes here--}}
+                        </div>
                     </div>
                 </div>
 
@@ -89,7 +95,7 @@
                                     <label class="col-md-3 control-label">Kelas:</label>
 
                                     <div class="col-md-6">
-                                        <select class="form-control select" style="" name="kelas" id="id_kelas"
+                                        <select class="form-control select kelas" style="" name="kelas"
                                                 onchange="getSiswa()">
                                             <option>Pilih Kelas</option>
                                         </select>
@@ -170,8 +176,7 @@
 
                                     <div class="col-md-6">
                                         <input type="text" name="siswa"
-                                               class="validate[required,custom[integer],min[18],max[120]] form-control"
-                                               readonly/>
+                                               class="form-control" readonly/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -179,8 +184,7 @@
 
                                     <div class="col-md-6">
                                         <input type="text" name="kelas"
-                                               class="validate[required,custom[integer],min[18],max[120]] form-control"
-                                               readonly/>
+                                               class="form-control" readonly/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -188,8 +192,7 @@
 
                                     <div class="col-md-6">
                                         <input type="text" name="mapel"
-                                               class="validate[required,custom[integer],min[18],max[120]] form-control"
-                                               readonly/>
+                                               class="form-control" readonly/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -231,6 +234,33 @@
         </div>
     </div>
 </div>
+
+{{--Detail--}}
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                    <fond face="Bernard MT">Detail Nilai Siswa</fond>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tbody id="modal-body">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- END PAGE CONTENT WRAPPER -->
 <!-- END PAGE CONTENT -->
 <script type="text/javascript" src="{!! asset('assets/js/plugins/jquery/jquery.min.js') !!}"></script>
@@ -320,6 +350,7 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();
+        getKelas();
     }
 
 
@@ -345,6 +376,47 @@
                 });
     }
 
+    function Detail(id) {
+        $("#modal-body").children().remove();
+        $.ajax({
+            method: "Get",
+            url: '/api/v1/nilai/' + id,
+            data: {},
+            beforeSend: function () {
+//                $('#loader-wrapper').show();
+            },
+            success: function (data) {
+//                $("#loader-wrapper").hide();
+                if (data.n_akhir >= data.mapel.kkm) {
+                    $("#modal-body").append("<tr><td> NIS </td><td>: </td><td>" + data.siswa.nis + "</td></tr>" +
+                            "<tr><td> Nama </td><td> : </td><td>" + data.siswa.nama + "</td></tr>" +
+                            "<tr><td> Kelas </td><td> : </td><td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td></tr>" +
+                            "<tr><td> Bidang Studi </td><td> : </td><td>" + data.mapel.mapel + "</td></tr>" +
+                            "<tr><td> KKM </td><td> : </td><td>" + data.mapel.kkm + "</td></tr>" +
+                            "<tr><td> Nilai Tugas </td><td> : </td><td>" + data.n_tugas + "</td></tr>" +
+                            "<tr><td> Nilai UTS </td><td> : </td><td>" + data.n_uts + "</td></tr>" +
+                            "<tr><td> Nilai UAS </td><td> : </td><td>" + data.n_uas + "</td></tr>" +
+                            "<tr><td> Nilai Akhir </td><td> : </td><td>" + data.n_akhir + "</td></tr>" +
+                            "<tr><td> Keterangan </td><td> : </td><td><span class='label label-info label-form'>Lulus</span></td></tr>"
+                    );
+                }
+                else {
+                    $("#modal-body").append("<tr><td> NIS </td><td>: </td><td>" + data.siswa.nis + "</td></tr>" +
+                            "<tr><td> Nama </td><td> : </td><td>" + data.siswa.nama + "</td></tr>" +
+                            "<tr><td> Kelas </td><td> : </td><td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td></tr>" +
+                            "<tr><td> Bidang Studi </td><td> : </td><td>" + data.mapel.mapel + "</td></tr>" +
+                            "<tr><td> KKM </td><td> : </td><td>" + data.mapel.kkm + "</td></tr>" +
+                            "<tr><td> Nilai Tugas </td><td> : </td><td>" + data.n_tugas + "</td></tr>" +
+                            "<tr><td> Nilai UTS </td><td> : </td><td>" + data.n_uts + "</td></tr>" +
+                            "<tr><td> Nilai UAS </td><td> : </td><td>" + data.n_uas + "</td></tr>" +
+                            "<tr><td> Nilai Akhir </td><td> : </td><td>" + data.n_akhir + "</td></tr>" +
+                            "<tr><td> Keterangan </td><td> : </td><td><span class='label label-danger label-form'>Remidi</span></td></tr>"
+                    );
+                }
+            }
+        });
+    }
+
     function Hapus(id) {
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
@@ -364,7 +436,7 @@
 
     function getAjax() {
         $("#row").children().remove();
-
+        $("#pagination").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -374,6 +446,27 @@
             $.getJSON("/api/v1/nilai", function (data) {
 //                console.log(data);
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+//                            $(".pagination-sm").append("<li><a onclick='getData(\"" + cari + "\"," + i + ")'> " + i + " </a></li>");
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     if (data.n_akhir >= data.mapel.kkm) {
 //                        var ket = "Lulus";
@@ -382,12 +475,10 @@
                                 "<td>" + data.siswa.nama + "</td>" +
                                 "<td>" + data.siswa.kelas.kelas + " " + data.siswa.kelas.jurusan.jurusan + "</td>" +
                                 "<td>" + data.mapel.mapel + "</td>" +
-                                "<td>" + data.n_tugas + "</td>" +
-                                "<td>" + data.n_uts + "</td>" +
-                                "<td>" + data.n_uas + "</td>" +
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-info label-form'>Lulus</span></td>" +
                                 "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
@@ -404,6 +495,7 @@
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-danger label-form'>Remidi</span></td>" +
                                 "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                                 "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button>" +
                                 "</td></tr>");
@@ -416,16 +508,38 @@
 
     function getData(page) {
         $("#row").children().remove();
-//        $("#pagination").children().remove();
+        $("#pagination").children().remove();
         var term = $("#search").val();
+        var kelas = $("select[name='kelas']").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
             height: 0
         }, 500);
         setTimeout(function () {
-            $.getJSON("/api/v1/nilai?page=" + page + "&term=" + term, function (data) {
+            $.getJSON("/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas, function (data) {
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+//                            $(".pagination-sm").append("<li><a onclick='getData(\"" + cari + "\"," + i + ")'> " + i + " </a></li>");
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     if (data.n_akhir >= data.mapel.kkm) {
 //                        var ket = "Lulus";
@@ -478,12 +592,12 @@
     }
 
     function getKelas() {
-        $('#id_kelas').children().remove();
-        $("#id_kelas").append("<option>Pilih Kelas</option>")
+        $('.kelas').children().remove();
+        $(".kelas").append("<option value=''>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
-                $("#id_kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
+                $(".kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
             })
         })
     }
@@ -492,10 +606,9 @@
         var $form = $("#Form-Create"),
                 kelas = $form.find("select[name='kelas']").val();
         $('#id_siswa').children().remove();
-        $("#id_siswa").append("<option>Pilih Siswa</option>")
+        $("#id_siswa").append("<option>Pilih Nama Siswa</option>");
         $.getJSON("/api/v1/list-siswa-by-kelas/" + kelas, function (data) {
             var jumlah = data.length;
-            $("#id_siswa").append("<option> Pilih Nama Siswa </option>")
             $.each(data.slice(0, jumlah), function (i, data) {
                 $("#id_siswa").append("<option value='" + data.id + "'>" + data.nama + "</option>")
             })

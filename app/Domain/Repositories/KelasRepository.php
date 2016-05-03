@@ -106,16 +106,20 @@ class KelasRepository extends AbstractRepository implements Paginable, Crudable
         }
 
         // query to sql
-        $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
-//        $data = $this->model
-//            ->where('kelas', $search)
-//            ->paginate($limit)
-//            ->toArray();
+//        $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
+        $data = $this->model
+            ->join('jurusan', 'kelas.id_jurusan', '=', 'jurusan.id')
+            ->where('kelas.kelas', 'like', '%' . $search . '%')
+            ->select('kelas.*')
+            ->orderBy('kelas.kelas', 'asc')
+            ->orderBy('jurusan.jurusan', 'asc')
+            ->paginate($limit)
+            ->toArray();
 
         // store to cache
-//        $this->cache->put(Kelas::$tags, $key, $organisasi, 10);
+        $this->cache->put(Kelas::$tags, $key, $data, 10);
 
-        return $organisasi;
+        return $data;
     }
 
     public function getList()

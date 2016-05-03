@@ -39,7 +39,7 @@ class NilaiController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->nilai->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
+        return $this->nilai->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'), $request->input('kelas'));
 //        return 'index';
     }
 

@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -29,6 +29,7 @@
                         </div>
                     </center>
                     <br>
+
                     <div class="panel-body">
                         <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;"
                                 onclick="tambah()">
@@ -59,6 +60,10 @@
                             {{--looping data from ajax--}}
                             </tbody>
                         </table>
+
+                        <div id="pagination">
+
+                        </div>
                     </div>
                 </div>
 
@@ -79,6 +84,7 @@
                             <form id="Form-Create" role="form" class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Kelas:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="kelas"
                                                class="validate[required,maxSize[8]] form-control"/>
@@ -86,6 +92,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Jurusan:</label>
+
                                     <div class="col-md-6">
                                         <select class="form-control select" style="" name="jurusan" id="id_jurusan">
                                             <option>Pilih Jurusan</option>
@@ -94,6 +101,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Jumlah Siswa:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="jml"
                                                class="validate[required,maxSize[8]] form-control"/>
@@ -126,8 +134,10 @@
                         <div class="block col-md-8">
                             <form id="Form-Edit" role="form" class="form-horizontal">
                                 <input type="hidden" name="id">
+
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Kelas:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="kelas"
                                                class="validate[required,maxSize[8]] form-control"/>
@@ -135,6 +145,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Jurusan:</label>
+
                                     <div class="col-md-6">
                                         <select class="form-control select" style="" name="jurusan" id="id_jurusan">
                                             <option>Pilih Jurusan</option>
@@ -143,6 +154,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Jumlah Siswa:</label>
+
                                     <div class="col-md-6">
                                         <input type="text" name="jml"
                                                class="validate[required,maxSize[8]] form-control"/>
@@ -241,10 +253,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/kelas/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/kelas/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='kelas']").val(data_edit.kelas);
@@ -287,10 +299,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/kelas/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/kelas/' + id,
+                data: {}
+            })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -301,7 +313,7 @@
     }
     function getAjax() {
         $("#row").children().remove();
-        var cari = $("#search").val();
+        $("#pagination").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -310,6 +322,26 @@
         setTimeout(function () {
             $.getJSON("/api/v1/kelas", function (data) {
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.kelas + " " + data.jurusan.jurusan + "</td>" +
@@ -323,7 +355,7 @@
 
     function getData(page) {
         $("#row").children().remove();
-//        $("#pagination").children().remove();
+        $("#pagination").children().remove();
         var term = $("#search").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
@@ -333,24 +365,25 @@
         setTimeout(function () {
             $.getJSON("/api/v1/kelas?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
-//                var jml_hal = Math.ceil(data.total / 10);
-//                $("#pagination").append("Showing " + data.from + "to " + data.to + " of " + data.total + " entries");
-//                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
-//
-//                if (data.last_page > 1) {
-//                    for (var i = 1; i <= data.last_page; i++) {
-//                        if (data.current_page == i) {
-//                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
-//                        }
-//                        else {
-//                            $(".pagination-sm").append("<li><a href='#'>" + i + " </a></li>");
-//                        }
-//                     }
-//                }
-//                else {
-//                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
-//                }
-//                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getData(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
 
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +

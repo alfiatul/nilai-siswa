@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -46,11 +46,11 @@
                                 </button>
                             </div>
                         </div>
-                        {{--<div class="col-md-3 push-down-10 pull-right">--}}
-                        {{--<select class="form-control select" style="" name="kelas" id="id_kelas">--}}
-                        {{--<option>Pilih kelas</option>--}}
-                        {{--</select>--}}
-                        {{--</div>--}}
+                        <div class="col-md-3 push-down-10 pull-right">
+                            <select class="form-control select kelas" style="" name="kelas">
+                                <option>Pilih kelas</option>
+                            </select>
+                        </div>
                         <table class="table table-hover ">
                             <thead>
                             <tr>
@@ -110,7 +110,7 @@
                                     <label class="col-md-3 control-label">Kelas:</label>
 
                                     <div class="col-md-6">
-                                        <select class="form-control select" style="" name="kelas" id="id_kelas">
+                                        <select class="form-control select kelas" name="kelas">
                                             <option>Pilih kelas</option>
                                         </select>
                                     </div>
@@ -281,16 +281,9 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-//                    jk = $form.find("input[name='jk']").val(),
+                    jk = $form.find("input[name='jk']").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
-
-            if (document.getElementById("laki").checked = true) {
-                var jk = 'L';
-            }
-            if (document.getElementById("perempuan").checked = true) {
-                var jk = 'P';
-            }
 
             var posting = $.post('/api/v1/siswa', {
                 id_kelas: id_kelas,
@@ -315,16 +308,9 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-//                    jk = $form.find("input[name='jk']").val(),
+                    jk = $form.find("input[name='jk']").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
-
-            if (document.getElementById("laki").checked = true) {
-                var jk = 'L';
-            }
-            if (document.getElementById("perempuan").checked = true) {
-                var jk = 'P';
-            }
 
             currentRequest = $.ajax({
                 method: "PUT",
@@ -370,10 +356,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/siswa/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/siswa/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='nis']").val(data_edit.nis);
@@ -438,16 +424,16 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         getAjax();
-//        getKelas();
+        getKelas();
     }
 
     function getKelas() {
-        $('#id_kelas').children().remove();
-        $("#id_kelas").append("<option value=''>Pilih Kelas</option>")
+        $('.kelas').children().remove();
+        $(".kelas").append("<option value=''>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
-                $("#id_kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
+                $(".kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
             })
         })
     }
@@ -456,10 +442,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/siswa/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/siswa/' + id,
+                data: {}
+            })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -471,7 +457,7 @@
 
     function getAjax() {
         $("#row").children().remove();
-        var cari = $("#search").val();
+        $("#pagination").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -515,7 +501,7 @@
                             "<td>" + data.agama + "</td>" +
                             "<td>" + data.alamat + "</td>" +
                             "<td>" +
-                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(" + data.id + ")'><i class='fa fa-eye'></i></button> " +
+//                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(" + data.id + ")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })
@@ -527,14 +513,14 @@
         $("#row").children().remove();
         $("#pagination").children().remove();
         var term = $("#search").val();
-//        var kelas = $("select[name='kelas']").val();
+        var kelas = $("select[name='kelas']").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
             height: 0
         }, 500);
         setTimeout(function () {
-            $.getJSON("/api/v1/siswa?page=" + page + "&term=" + term, function (data) {
+            $.getJSON("/api/v1/siswa?page=" + page + "&term=" + term + "&kelas=" + kelas, function (data) {
                 var jumlah = data.data.length;
 
                 // Init pagination

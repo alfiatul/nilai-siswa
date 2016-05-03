@@ -103,12 +103,17 @@ class MapelRepository extends AbstractRepository implements Paginable, Crudable
         }
 
         // query to sql
-        $organisasi = parent::getByPage($limit, $page, $column, 'mapel', $search);
+//        $organisasi = parent::getByPage($limit, $page, $column, 'mapel', $search);
+        $data = $this->model
+            ->where('mapel', 'like', '%' . $search . '%')
+            ->orderBy('mapel', 'asc')
+            ->paginate($limit)
+            ->toArray();
 
         // store to cache
-        $this->cache->put(Mapel::$tags, $key, $organisasi, 10);
+        $this->cache->put(Mapel::$tags, $key, $data, 10);
 
-        return $organisasi;
+        return $data;
     }
 
     public function getList()
