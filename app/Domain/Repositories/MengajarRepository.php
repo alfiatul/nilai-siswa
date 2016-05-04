@@ -36,8 +36,8 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
             $mengajar = parent::create(
                 [
                     'id_mapel' => e($data['id_mapel']),
-                    'id_kelas'      => e($data['id_kelas']),
-                    'id_guru'        => e($data['id_guru']),
+                    'id_kelas' => e($data['id_kelas']),
+                    'id_guru'  => e($data['id_guru']),
                 ]
             );
             // flush cache with tags
@@ -60,8 +60,8 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
 
             $mengajar = parent::update($id, [
                 'id_mapel' => e($data['id_mapel']),
-                'id_kelas'      => e($data['id_kelas']),
-                'id_guru'        => e($data['id_guru']),
+                'id_kelas' => e($data['id_kelas']),
+                'id_guru'  => e($data['id_guru']),
 
             ]);
 
@@ -133,6 +133,29 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
 //            ->orderBy('kelas.kelas')
 //            ->orderBy('jurusan.jurusan')
             ->get();
+        // store to cache
+        $this->cache->put(Mengajar::$tags, $key, $data, 10);
+
+        return $data;
+    }
+
+    public function getByGuru($id, $limit = 10, $page = 1, array $column = ['*'], $field, $search = '')
+    {
+        // set key
+        $key = 'mengajar-get-by-guru-' . $id . $limit . $page . $search;
+
+        // has section and key
+        if ($this->cache->has(Mengajar::$tags, $key)) {
+            return $this->cache->get(Mengajar::$tags, $key);
+        }
+
+        // query to sql
+//        $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
+        $data = $this->model
+            ->where('id_guru', $id)
+            ->paginate($limit)
+            ->toArray();
+
         // store to cache
         $this->cache->put(Mengajar::$tags, $key, $data, 10);
 

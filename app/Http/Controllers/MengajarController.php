@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class MengajarController extends Controller
 {
     protected $mengajar;
+
     public function __construct(MengajarRepository $mengajar)
     {
         $this->mengajar = $mengajar;
@@ -25,6 +26,7 @@ class MengajarController extends Controller
     {
         return $this->mengajar->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
     }
+
     public function store(MengajarRequest $request)
     {
         return $this->mengajar->create($request->all());
@@ -50,7 +52,8 @@ class MengajarController extends Controller
         return $this->mengajar->getList();
     }
 
-
-
-
+    public function getByGuru(Request $request, $id)
+    {
+        return $this->mengajar->getByGuru($id, 10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
+    }
 }

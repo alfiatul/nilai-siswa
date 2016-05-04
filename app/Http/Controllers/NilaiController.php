@@ -52,6 +52,11 @@ class NilaiController extends Controller
         return $this->nilai->create($request->all());
     }
 
+    public function createByMengajar($id, NilaiRequest $request)
+    {
+        return $this->nilai->createByMengajar($id, $request->all());
+    }
+
     /**
      * @param $id
      * @return mixed
@@ -78,5 +83,10 @@ class NilaiController extends Controller
     public function destroy($id)
     {
         return $this->nilai->delete($id);
+    }
+
+    public function getByAjar($id, Request $request)
+    {
+        return $this->nilai->getByAjar($id, 10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
     }
 }
