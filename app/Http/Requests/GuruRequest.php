@@ -11,7 +11,7 @@ class GuruRequest extends Request
         'kode_guru' => '',
         'nama'      => '',
         'alamat'    => '',
-        'id_mapel'  => '',
+//        'id_mapel'  => '',
         'no_hp'     => '',
 
     ];
@@ -22,7 +22,7 @@ class GuruRequest extends Request
             'kode_guru' => '',
             'nama'      => 'required',
             'alamat'    => 'required',
-            'id_mapel'  => 'required',
+//            'id_mapel'  => 'required',
             'no_hp'     => 'required',
         ];
     }
@@ -41,7 +41,7 @@ class GuruRequest extends Request
                 'kode_guru' => $message->first('kode_guru'),
                 'nama'      => $message->first('nama'),
                 'alamat'    => $message->first('alamat'),
-                'id_mapel'  => $message->first('kode_mapel'),
+//                'id_mapel'  => $message->first('kode_mapel'),
                 'no_hp'     => $message->first('no_hp'),
             ]
         ];

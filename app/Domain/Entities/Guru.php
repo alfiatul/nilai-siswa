@@ -28,7 +28,7 @@ class Guru extends Entities
      */
     protected $primaryKey = 'id';
 
-    protected $with = ['mapel'];
+//    protected $with = ['mapel'];
     /**
      * @var string
      */
@@ -43,8 +43,8 @@ class Guru extends Entities
         'user_updater',
     ];
 
-    public function mapel()
-    {
-        return $this->belongsTo('App\Domain\Entities\Mapel', 'id_mapel');
-    }
+//    public function mapel()
+//    {
+//        return $this->belongsTo('App\Domain\Entities\Mapel', 'id_mapel');
+//    }
 }

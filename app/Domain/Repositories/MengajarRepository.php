@@ -150,7 +150,6 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
         }
 
         // query to sql
-//        $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
         $data = $this->model
             ->where('id_guru', $id)
             ->paginate($limit)

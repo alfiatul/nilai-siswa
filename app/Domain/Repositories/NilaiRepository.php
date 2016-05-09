@@ -188,16 +188,30 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
         $id = \DB::table('mengajar')->where('id', $id)->first();
 
         // query to sql
-        $data = $this->model
-            ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
-            ->join('mengajar', 'nilai.id_mapel', '=', 'mengajar.id_mapel')
-            ->where('siswa.id_kelas', $id->id_kelas)
-            ->where('nilai.id_mapel', $id->id_mapel)
-            ->where('mengajar.id', $id->id)
-            ->select('nilai.*', 'mengajar.id_guru')
-            ->orderBy('siswa.nama', 'asc')
-            ->paginate($limit)
-            ->toArray();
+        if ($search == null || $search == '') {
+            $data = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mengajar', 'nilai.id_mapel', '=', 'mengajar.id_mapel')
+                ->where('siswa.id_kelas', $id->id_kelas)
+                ->where('nilai.id_mapel', $id->id_mapel)
+                ->where('mengajar.id', $id->id)
+                ->select('nilai.*', 'mengajar.id_guru')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else {
+            $data = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mengajar', 'nilai.id_mapel', '=', 'mengajar.id_mapel')
+                ->where('siswa.id_kelas', $id->id_kelas)
+                ->where('nilai.id_mapel', $id->id_mapel)
+                ->where('mengajar.id', $id->id)
+                ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->select('nilai.*', 'mengajar.id_guru')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        }
 
         // store to cache
 //        $this->cache->put(Nilai::$tags, $key, $organisasi, 10);

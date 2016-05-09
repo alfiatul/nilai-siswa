@@ -40,7 +40,7 @@ class GuruRepository extends AbstractRepository implements Paginable, Crudable
                     'kode_guru' => e($data['kode_guru']),
                     'nama'      => e($data['nama']),
                     'alamat'    => e($data['alamat']),
-                    'id_mapel'  => e($data['id_mapel']),
+//                    'id_mapel'  => e($data['id_mapel']),
                     'no_hp'     => e($data['no_hp']),
                 ]
             );
@@ -66,7 +66,7 @@ class GuruRepository extends AbstractRepository implements Paginable, Crudable
                 'kode_guru' => e($data['kode_guru']),
                 'nama'      => e($data['nama']),
                 'alamat'    => e($data['alamat']),
-                'id_mapel'  => e($data['id_mapel']),
+//                'id_mapel'  => e($data['id_mapel']),
                 'no_hp'     => e($data['no_hp']),
             ]);
 

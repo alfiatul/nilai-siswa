@@ -59,7 +59,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
-                                <th>Bidang Study</th>
+                                {{--<th>Bidang Study</th>--}}
                                 <th>Telp</th>
                                 <th>Aksi</th>
                             </tr>
@@ -69,7 +69,7 @@
                             </tbody>
                         </table>
 
-                        <div id="pagination">
+                        <div id="pagination-guru">
                             {{--Pagination goes here--}}
                         </div>
                     </div>
@@ -99,11 +99,10 @@
                         </div>
 
                         {{--<div class="input-group col-md-3 push-down-10 pull-right">--}}
-                        {{--<input type="text" class="form-control" placeholder="Keywords..." id="search"/>--}}
+                        {{--<input type="text" class="form-control" placeholder="Keywords..." id="search-ajar"/>--}}
 
-                        {{--<div class="input-group-btn">--}}
-                        {{--<button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>--}}
-                        {{--</button>--}}
+                        {{--<div class="input-group-btn" id="btn-cari-ajar">--}}
+
                         {{--</div>--}}
                         {{--</div>--}}
                         <table class="table table-hover ">
@@ -189,14 +188,13 @@
 
                         </div>
 
-                        {{--<div class="input-group col-md-3 push-down-10 pull-right">--}}
-                        {{--<input type="text" class="form-control" placeholder="Keywords..." id="search"/>--}}
+                        <div class="input-group col-md-3 push-down-10 pull-right">
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search-nilai"/>
 
-                        {{--<div class="input-group-btn">--}}
-                        {{--<button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>--}}
-                        {{--</button>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
+                            <div class="input-group-btn" id="btn-cari-nilai">
+
+                            </div>
+                        </div>
                         <table class="table table-hover ">
                             <thead>
                             <tr>
@@ -215,6 +213,10 @@
                             {{--looping data from ajax--}}
                             </tbody>
                         </table>
+
+                        <div id="pagination-nilai">
+                            {{--Pagination Goes Here--}}
+                        </div>
                     </div>
                 </div>
 
@@ -330,15 +332,15 @@
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Bidang Study:</label>
+                                {{--<div class="form-group">--}}
+                                    {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
 
-                                    <div class="col-md-6">
-                                        <select class="form-control select" style="" name="mapel" id="id_mapel">
-                                            <option selected>Pilih Bidang Studi</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                    {{--<div class="col-md-6">--}}
+                                        {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
+                                            {{--<option selected>Pilih Bidang Studi</option>--}}
+                                        {{--</select>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
 
@@ -391,15 +393,15 @@
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Bidang Study:</label>
+                                {{--<div class="form-group">--}}
+                                    {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
 
-                                    <div class="col-md-6">
-                                        <select class="form-control select" style="" name="mapel" id="id_mapel">
-                                            <option>Pilih Bidang Studi</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                    {{--<div class="col-md-6">--}}
+                                        {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
+                                            {{--<option>Pilih Bidang Studi</option>--}}
+                                        {{--</select>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
 
@@ -462,7 +464,8 @@
 
             event.preventDefault();
             var $form = $("#Form-Create"),
-                    id_mapel = $form.find("select[name='mapel']").val(),
+//                    id_mapel = $form.find("select[name='mapel']").val(),
+                    id_mapel = '',
                     kode_guru = '',
                     nama = $form.find("input[name='nama']").val(),
                     alamat = $form.find("input[name='alamat']").val(),
@@ -487,7 +490,8 @@
             event.preventDefault();
             var $form = $(this),
                     id = $form.find("input[name='id']").val(),
-                    id_mapel = $form.find("select[name='mapel']").val(),
+//                    id_mapel = $form.find("select[name='mapel']").val(),
+                    id_mapel = '',
                     kode_guru = '',
                     nama = $form.find("input[name='nama']").val(),
                     alamat = $form.find("input[name='alamat']").val(),
@@ -592,7 +596,7 @@
     }
 
     function tambah_ajar(id) {
-//        console.log("id guru : " + id);
+        console.log("id guru : " + id);
         $('#Create').hide();
         $('#Edit').hide();
         $('#List').hide();
@@ -605,7 +609,7 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $("input[name='id_guru']").val(id);
-//        getMapel();
+//        List Mapel
         $('#mapel-ajar').children().remove();
         $("#mapel-ajar").append("<option>Pilih Bidang Strudy</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
@@ -615,6 +619,7 @@
             })
         });
 
+        // List Kelas Ajar
         $('#kelas-ajar').children().remove();
         $("#kelas-ajar").append("<option value=''>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
@@ -692,12 +697,15 @@
         $('#Nilai').hide();
         $('#Create-Ajar').hide();
         $('#Create-Nilai').hide();
-        $("#btn-mapel-guru").children().remove();
+        $("#search-guru").val('');
+        $("#search-ajar").val('');
+        $("#search-nilai").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
 
+        $("#btn-mapel-guru").children().remove();
         $("#data-mengajar").children().remove();
         $("#btn-mapel-guru").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_ajar(\"" + id + "\")'>" +
                 "<i class='fa fa-plus'></i></button>");
@@ -709,6 +717,7 @@
         setTimeout(function () {
             $.getJSON("/api/v1/mengajar-by-guru/" + id, function (data) {
                 var jumlah = data.data.length;
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#data-mengajar").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.mapel.mapel + "</td>" +
@@ -733,7 +742,9 @@
         $('#Nilai').show();
         $('#Create-Ajar').hide();
         $('#Create-Nilai').hide();
-        $("#btn-nilai-siswa").children().remove();
+        $("#search-guru").val('');
+        $("#search-ajar").val('');
+        $("#search-nilai").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         document.getElementById("Form-Create-Ajar").reset();
@@ -741,8 +752,12 @@
 
         $("#data-nilai").children().remove();
         $("#crumb").children().remove();
+        $("#btn-nilai-siswa").children().remove();
+        $("#btn-cari-nilai").children().remove();
+
         $("#btn-nilai-siswa").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_nilai_siswa(\"" + id + "\")'>" +
                 "<i class='fa fa-plus'></i></button>");
+        $("#btn-cari-nilai").append("<button class='btn btn-primary' onclick='getDataNilai(\"" + id + "\"," + 1 + ")'><i class='fa fa-search'></i></button>");
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -756,6 +771,99 @@
                         "<li><a href='#' onclick='Ajar(\"" + data.data[0].id_guru + "\")'>Bidang Studi Guru</a></li>" +
                         "<li class='active'>Nilai Siswa</li>" +
                         "</ul>");
+
+                // Init pagination
+                $("#pagination-nilai").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getDataNilai(\"" + id + "\"," + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
+                $.each(data.data.slice(0, jumlah), function (i, data) {
+                    if (data.n_akhir >= data.mapel.kkm) {
+                        $("#data-nilai").append("<tr><td>" + (i + 1) + "</td>" +
+                                "<td>" + data.siswa.nis + "</td>" +
+                                "<td>" + data.siswa.nama + "</td>" +
+                                "<td>" + data.n_tugas + "</td>" +
+                                "<td>" + data.n_uts + "</td>" +
+                                "<td>" + data.n_uas + "</td>" +
+                                "<td>" + data.n_akhir + "</td>" +
+                                "<td><span class='label label-info label-form'>Lulus</span></td>" +
+                                "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-eye'></i></button></td></tr>");
+                    }
+                    else {
+                        $("#data-nilai").append("<tr><td>" + (i + 1) + "</td>" +
+                                "<td>" + data.siswa.nis + "</td>" +
+                                "<td>" + data.siswa.nama + "</td>" +
+                                "<td>" + data.n_tugas + "</td>" +
+                                "<td>" + data.n_uts + "</td>" +
+                                "<td>" + data.n_uas + "</td>" +
+                                "<td>" + data.n_akhir + "</td>" +
+                                "<td><span class='label label-danger label-form'>Remidi</span></td>" +
+                                "<td>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-edit'></i></button></td></tr>");
+                    }
+                })
+            });
+        }, 2200);
+    }
+
+    function getDataNilai(id, page) {
+        $("#data-nilai").children().remove();
+        $("#crumb").children().remove();
+        $("#btn-nilai-siswa").children().remove();
+        $("#btn-cari-nilai").children().remove();
+        $("#pagination").children().remove();
+
+        var term = $("#search-nilai").val();
+        $("#btn-nilai-siswa").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_nilai_siswa(\"" + id + "\")'>" +
+                "<i class='fa fa-plus'></i></button>");
+        $("#btn-cari-nilai").append("<button class='btn btn-primary' onclick='getDataNilai(\"" + id + "\"," + 1 + ")'><i class='fa fa-search'></i></button>");
+        $("#loader2").delay(2000).animate({
+            opacity: 0,
+            width: 0,
+            height: 0
+        }, 500);
+        setTimeout(function () {
+            $.getJSON("/api/v1/nilai-by-mengajar/" + id + "?page=" + page + "&term=" + term, function (data) {
+                var jumlah = data.data.length;
+                $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
+                        "<li><a href='#' onclick='index()'>Guru</a></li>" +
+                        "<li><a href='#' onclick='Ajar(\"" + data.data[0].id_guru + "\")'>Bidang Studi Guru</a></li>" +
+                        "<li class='active'>Nilai Siswa</li>" +
+                        "</ul>");
+
+                // Init pagination
+                $("#pagination-nilai").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getDataNilai(\"" + id + "\"," + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
 
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     if (data.n_akhir >= data.mapel.kkm) {
@@ -796,6 +904,8 @@
         $('#Create-Ajar').hide();
         $('#Create-Nilai').hide();
         $("#search-guru").val('');
+        $("#search-ajar").val('');
+        $("#search-nilai").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         document.getElementById("Form-Create-Ajar").reset();
@@ -854,7 +964,7 @@
 
     function getAjax() {
         $("#row").children().remove();
-        $("#pagination").children().remove();
+        $("#pagination-guru").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -866,7 +976,7 @@
                 var jumlah = data.data.length;
 
                 // Init pagination
-                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+                $("#pagination-guru").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
 
                 if (data.last_page > 1) {
                     for (var i = 1; i <= data.last_page; i++) {
@@ -888,7 +998,7 @@
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.nama + "</td>" +
                             "<td>" + data.alamat + "</td>" +
-                            "<td>" + data.mapel.mapel + "</td>" +
+//                            "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
@@ -902,7 +1012,7 @@
 
     function getDataGuru(page) {
         $("#row").children().remove();
-        $("#pagination").children().remove();
+        $("#pagination-guru").children().remove();
         var term = $("#search-guru").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
@@ -914,7 +1024,7 @@
                 var jumlah = data.data.length;
 
                 // Init pagination
-                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+                $("#pagination-guru").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
 
                 if (data.last_page > 1) {
                     for (var i = 1; i <= data.last_page; i++) {
@@ -936,7 +1046,7 @@
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.nama + "</td>" +
                             "<td>" + data.alamat + "</td>" +
-                            "<td>" + data.mapel.mapel + "</td>" +
+//                            "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
