@@ -46,10 +46,10 @@
                         </button>
 
                         <div class="input-group col-md-3 push-down-10 pull-right">
-                            <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
+                            <input type="text" class="form-control" placeholder="Keywords..." id="search-guru"/>
 
                             <div class="input-group-btn">
-                                <button class="btn btn-primary" onclick="getData(1)"><i class="fa fa-search"></i>
+                                <button class="btn btn-primary" onclick="getDataGuru(1)"><i class="fa fa-search"></i>
                                 </button>
                             </div>
                         </div>
@@ -68,6 +68,10 @@
                             {{--looping data from ajax--}}
                             </tbody>
                         </table>
+
+                        <div id="pagination">
+                            {{--Pagination goes here--}}
+                        </div>
                     </div>
                 </div>
 
@@ -525,17 +529,17 @@
                     id_kelas = $form.find("select[name='kelas-ajar']").val();
 
 //            $("#Simpan-Ajar").click(function () {
-                var posting = $.post('/api/v1/mengajar', {
-                    id_guru: id_guru,
-                    id_mapel: id_mapel,
-                    id_kelas: id_kelas
-                });
+            var posting = $.post('/api/v1/mengajar', {
+                id_guru: id_guru,
+                id_mapel: id_mapel,
+                id_kelas: id_kelas
+            });
 
 //            //Put the results in a div
-                posting.done(function (data) {
-                    window.alert(data.result.message);
-                    Ajar(id_guru);
-                });
+            posting.done(function (data) {
+                window.alert(data.result.message);
+                Ajar(id_guru);
+            });
 //            });
         });
 
@@ -554,21 +558,21 @@
                     n_uas = $form.find("input[name='uas']").val();
 
 //            $("#Simpan-Nilai").click(function () {
-                var posting = $.post('/api/v1/nilai-by-mengajar/' + id_ngajar, {
-                    id_ngajar: id_ngajar,
-                    nis: nis,
-                    nama: nama,
-                    jk: jk,
-                    n_tugas: n_tugas,
-                    n_uts: n_uts,
-                    n_uas: n_uas
-                });
+            var posting = $.post('/api/v1/nilai-by-mengajar/' + id_ngajar, {
+                id_ngajar: id_ngajar,
+                nis: nis,
+                nama: nama,
+                jk: jk,
+                n_tugas: n_tugas,
+                n_uts: n_uts,
+                n_uas: n_uas
+            });
 
 //            //Put the results in a div
-                posting.done(function (data) {
-                    window.alert(data.result.message);
-                    Nilai(id_ngajar);
-                });
+            posting.done(function (data) {
+                window.alert(data.result.message);
+                Nilai(id_ngajar);
+            });
 //            });
         });
 
@@ -791,7 +795,7 @@
         $('#List').show();
         $('#Create-Ajar').hide();
         $('#Create-Nilai').hide();
-        $("#search").val('');
+        $("#search-guru").val('');
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         document.getElementById("Form-Create-Ajar").reset();
@@ -850,7 +854,7 @@
 
     function getAjax() {
         $("#row").children().remove();
-
+        $("#pagination").children().remove();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -860,6 +864,26 @@
             $.getJSON("/api/v1/guru", function (data) {
 //                console.log(data);
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getDataGuru(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.nama + "</td>" +
@@ -876,10 +900,10 @@
         }, 2200);
     }
 
-    function getData(page) {
+    function getDataGuru(page) {
         $("#row").children().remove();
-//        $("#pagination").children().remove();
-        var term = $("#search").val();
+        $("#pagination").children().remove();
+        var term = $("#search-guru").val();
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -888,6 +912,26 @@
         setTimeout(function () {
             $.getJSON("/api/v1/guru?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
+
+                // Init pagination
+                $("#pagination").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
+
+                if (data.last_page > 1) {
+                    for (var i = 1; i <= data.last_page; i++) {
+                        if (data.current_page == i) {
+                            $(".pagination-sm").append("<li class='active'><a href='#'>" + i + " </a></li>");
+                        }
+                        else {
+                            $(".pagination-sm").append("<li><a onclick='getDataGuru(" + i + ")'> " + i + " </a></li>");
+                        }
+                    }
+                }
+                else {
+                    $(".pagination-sm").append("<li class='active'><a href='#'>1</a></li>");
+                }
+
+                $(".pagination-sm").append("<li class='disabled'><a href='#'>&raquo;</a></li>");
+
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#row").append("<tr><td>" + (i + 1) + "</td>" +
                             "<td>" + data.nama + "</td>" +
