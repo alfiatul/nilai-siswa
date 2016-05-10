@@ -7,13 +7,13 @@
 {{--<li class="active">Guru</li>--}}
 
 {{--</ul>--}}
-        <!-- END BREADCRUMB -->
+<!-- END BREADCRUMB -->
 
 {{--<div class="page-title">--}}
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 700px;">
 
     <div id="List">
@@ -258,11 +258,12 @@
 
                                     <div class="col-md-4">
                                         <label class="check">
-                                            <input type="radio" class="iradio" value="L" id="laki"/> Laki-Laki
+                                            <input type="radio" name="jk" class="iradio" value="L"/> Laki-Laki
                                         </label>
 
                                         <label class="check">
-                                            <input type="radio" class="iradio" value="P" id="perempuan"/> Perempuan
+                                            <input type="radio" name="jk" class="iradio" value="P"/>
+                                            Perempuan
                                         </label>
                                     </div>
                                 </div>
@@ -332,15 +333,6 @@
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
-                                {{--<div class="form-group">--}}
-                                {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
-
-                                {{--<div class="col-md-6">--}}
-                                {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
-                                {{--<option selected>Pilih Bidang Studi</option>--}}
-                                {{--</select>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
 
@@ -393,15 +385,6 @@
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
-                                {{--<div class="form-group">--}}
-                                {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
-
-                                {{--<div class="col-md-6">--}}
-                                {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
-                                {{--<option>Pilih Bidang Studi</option>--}}
-                                {{--</select>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
 
@@ -436,7 +419,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4>
-                    <fond face="Bernard MT">Detail Daftar Guru</fond>
+                    <font face="Bernard MT">Detail Nilai Siswa</font>
                 </h4>
             </div>
             <div class="modal-body">
@@ -447,6 +430,7 @@
                 </table>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="edit-nilai">Simpan</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
             </div>
         </div>
@@ -532,7 +516,6 @@
                     id_mapel = $form.find("select[name='mapel-ajar']").val(),
                     id_kelas = $form.find("select[name='kelas-ajar']").val();
 
-//            $("#Simpan-Ajar").click(function () {
             var posting = $.post('/api/v1/mengajar', {
                 id_guru: id_guru,
                 id_mapel: id_mapel,
@@ -544,7 +527,6 @@
                 window.alert(data.result.message);
                 Ajar(id_guru);
             });
-//            });
         });
 
         // Simpan Nilai
@@ -552,21 +534,11 @@
 
             event.preventDefault();
 
-//            var laki = $('#laki').attr('checked','checked');
-//            var perempuan = $('#perempuan').attr('checked','checked');
-//            if ($('#laki').checked = true) {
-//                console.log("LAKI");
-//                $('#perempuan').checked = false;
-//            }
-//            if ($('#perempuan').checked = true) {
-//                console.log("PEREMPUAN");
-//                $('#laki').checked = false;
-//            }
             var $form = $("#Form-Create-Nilai"),
                     id_ngajar = $form.find("input[name='id_ngajar']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='siswa']").val(),
-                    jk = $form.find("input[name='jenis_kel']").val(),
+                    jk = $form.find("input[name='jk']:checked").val(),
                     n_tugas = $form.find("input[name='tugas']").val(),
                     n_uts = $form.find("input[name='uts']").val(),
                     n_uas = $form.find("input[name='uas']").val();
@@ -588,6 +560,41 @@
                 Nilai(id_ngajar);
             });
 //            });
+        });
+
+        // Edit Nilai Siswa
+        $("#edit-nilai").click(function (event) {
+            event.preventDefault();
+
+            var id = $("#edit-id").val(),
+                    ajar = $("#edit-ajar").val(),
+                    nilai_tugas = $("#edit-ntugas").val(),
+                    nilai_uts = $("#edit-nuts").val(),
+                    nilai_uas = $("#edit-nuas").val();
+
+//            console.log(id + "\n" + nilai_tugas + "\n" + nilai_uts + "\n" + nilai_uas);
+            currentRequest = $.ajax({
+                method: "PUT",
+                url: '/api/v1/nilai/' + id,
+                data: {
+                    n_tugas: nilai_tugas,
+                    n_uts: nilai_uts,
+                    n_uas: nilai_uas
+                },
+                beforeSend: function () {
+                    if (currentRequest != null) {
+                        currentRequest.abort();
+                    }
+                },
+                success: function (data) {
+                    window.alert(data.result.message);
+                    Nilai(ajar);
+                },
+                error: function (data) {
+                    window.alert(data.result.message);
+                    Nilai(ajar);
+                }
+            });
         });
 
     })
@@ -669,10 +676,10 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/guru/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/guru/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='id_mapel']").val(data_edit.id_mapel);
@@ -813,7 +820,9 @@
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-info label-form'>Lulus</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-eye'></i></button></td></tr>");
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' tolltip='Edit Nilai Siswa' onclick='Detail(\"" + data.id + "\",\"" + id + "\")'><i class='fa fa-pencil'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-eye'></i></button>" +
+                                "</td></tr>");
                     }
                     else {
                         $("#data-nilai").append("<tr><td>" + (i + 1) + "</td>" +
@@ -825,7 +834,9 @@
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-danger label-form'>Remidi</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-edit'></i></button></td></tr>");
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' tolltip='Edit Nilai Siswa' onclick='Detail(\"" + data.id + "\",\"" + id + "\")'><i class='fa fa-pencil'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
+                                "</td></tr>");
                     }
                 })
             });
@@ -887,7 +898,9 @@
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-info label-form'>Lulus</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-eye'></i></button></td></tr>");
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-eye'></i></button>" +
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' tolltip='Edit Nilai Siswa' onclick='Detail(\"" + data.id + "\",\"" + id + "\")'><i class='fa fa-pencil'></i></button> " +
+                                "</td></tr>");
                     }
                     else {
                         $("#data-nilai").append("<tr><td>" + (i + 1) + "</td>" +
@@ -899,7 +912,9 @@
                                 "<td>" + data.n_akhir + "</td>" +
                                 "<td><span class='label label-danger label-form'>Remidi</span></td>" +
                                 "<td>" +
-                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-edit'></i></button></td></tr>");
+                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' tolltip='Edit Nilai Siswa' onclick='Detail(\"" + data.id + "\",\"" + id + "\")'><i class='fa fa-pencil'></i></button> " +
+//                                "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='das(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
+                                "</td></tr>");
                     }
                 })
             });
@@ -935,22 +950,33 @@
         })
     }
 
-    function Detail(id) {
-        $("#modal-body").children().remove();
+    function Detail(id, ajar) {
         $.ajax({
             method: "Get",
-            url: '/api/v1/guru/' + id,
+            url: '/api/v1/nilai/' + id,
             data: {},
             beforeSend: function () {
 //                $('#loader-wrapper').show();
             },
             success: function (data) {
 //                $("#loader-wrapper").hide();
+                $("#modal-body").children().remove();
+                if (data.siswa.jk == 'L') {
+                    var jk = 'Laki-Laki';
+                }
+                else {
+                    var jk = 'Perempuan';
+                }
+
                 $("#modal-body").append(
-                        "<tr><td> Nama </td><td> : </td><td>" + data.nama + "</td></tr>" +
+                        "<tr><td> NIS </td><td> : </td><td>" + data.siswa.nis + "</td></tr>" +
+                        "<tr><td> Nama </td><td> : </td><td>" + data.siswa.nama + "</td></tr>" +
+                        "<tr><td> Jenis Kelamin </td><td> : </td><td>" + jk + "</td></tr>" +
                         "<tr><td> Bidang Studi </td><td> : </td><td>" + data.mapel.mapel + "</td></tr>" +
-                        "<tr><td> Alamat </td><td> : </td><td>" + data.alamat + "</td></tr>" +
-                        "<tr><td> Telp </td><td> : </td><td>" + data.no_telp + "</td></tr>"
+                        "<tr><td> Nilai Tugas </td><td> : </td><td><input type='text' id='edit-ntugas' value='" + data.n_tugas + "'></td></tr>" +
+                        "<tr><td> Nilai UTS </td><td> : </td><td><input type='text' id='edit-nuts' value='" + data.n_uts + "'></td></tr>" +
+                        "<tr><td> Nilai UAS </td><td> : </td><td><input type='text' id='edit-nuas' value='" + data.n_uas + "'></td></tr>" +
+                        "<tr><td><input type='hidden' id='edit-id' value='" + id + "'> <input type='hidden' id='edit-ajar' value='" + ajar + "'></td></tr>"
                 );
             }
         });
@@ -960,11 +986,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/guru/' + id,
-                        data: {}
-                    })
-
+                method: "DELETE",
+                url: '/api/v1/guru/' + id,
+                data: {}
+            })
                     .done(function (data) {
                         window.alert(data.result.message);
                         getAjax();
