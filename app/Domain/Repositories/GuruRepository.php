@@ -110,8 +110,11 @@ class GuruRepository extends AbstractRepository implements Paginable, Crudable
         }
 
         // query to sql
-        $data = parent::getByPage($limit, $page, $column, 'nama', $search);
-//        $data = $this->model->get();
+//        $data = parent::getByPage($limit, $page, $column, 'nama', $search);
+        $data = $this->model
+            ->orderBy('nama', 'asc')
+            ->paginate($limit)
+            ->toArray();
 
         // store to cache
 //        $this->cache->put(Guru::$tags, $key, $organisasi, 10);

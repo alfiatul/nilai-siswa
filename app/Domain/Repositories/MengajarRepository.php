@@ -107,6 +107,7 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
         // query to sql
 //        $organisasi = parent::getByPage($limit, $page, $column, 'kelas', $search);
         $data = $this->model
+            ->orderBy('id_kelas', 'asc')
             ->paginate($limit)
             ->toArray();
 
@@ -152,11 +153,12 @@ class MengajarRepository extends AbstractRepository implements Paginable, Crudab
         // query to sql
         $data = $this->model
             ->where('id_guru', $id)
+            ->orderBy('id_kelas', 'asc')
             ->paginate($limit)
             ->toArray();
 
         // store to cache
-        $this->cache->put(Mengajar::$tags, $key, $data, 10);
+//        $this->cache->put(Mengajar::$tags, $key, $data, 10);
 
         return $data;
     }

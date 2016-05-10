@@ -7,14 +7,14 @@
 {{--<li class="active">Guru</li>--}}
 
 {{--</ul>--}}
-<!-- END BREADCRUMB -->
+        <!-- END BREADCRUMB -->
 
 {{--<div class="page-title">--}}
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
-<div class="page-content-wrap" style="min-height: 600px;">
+        <!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap" style="min-height: 700px;">
 
     <div id="List">
         <ul class="breadcrumb">
@@ -41,9 +41,9 @@
                                 onclick="tambah()">
                             <i class="fa fa-plus"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">
-                            <i class="fa fa-refresh"></i>
-                        </button>
+                        {{--<button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;">--}}
+                        {{--<i class="fa fa-refresh"></i>--}}
+                        {{--</button>--}}
 
                         <div class="input-group col-md-3 push-down-10 pull-right">
                             <input type="text" class="form-control" placeholder="Keywords..." id="search-guru"/>
@@ -258,11 +258,11 @@
 
                                     <div class="col-md-4">
                                         <label class="check">
-                                            <input type="radio" class="iradio" name="jk" value="L" id="L"/> Laki-Laki
+                                            <input type="radio" class="iradio" value="L" id="laki"/> Laki-Laki
                                         </label>
 
                                         <label class="check">
-                                            <input type="radio" class="iradio" name="jk" value="P" id="P"/> Perempuan
+                                            <input type="radio" class="iradio" value="P" id="perempuan"/> Perempuan
                                         </label>
                                     </div>
                                 </div>
@@ -333,13 +333,13 @@
                                     </div>
                                 </div>
                                 {{--<div class="form-group">--}}
-                                    {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
+                                {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
 
-                                    {{--<div class="col-md-6">--}}
-                                        {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
-                                            {{--<option selected>Pilih Bidang Studi</option>--}}
-                                        {{--</select>--}}
-                                    {{--</div>--}}
+                                {{--<div class="col-md-6">--}}
+                                {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
+                                {{--<option selected>Pilih Bidang Studi</option>--}}
+                                {{--</select>--}}
+                                {{--</div>--}}
                                 {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
@@ -394,13 +394,13 @@
                                     </div>
                                 </div>
                                 {{--<div class="form-group">--}}
-                                    {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
+                                {{--<label class="col-md-3 control-label">Bidang Study:</label>--}}
 
-                                    {{--<div class="col-md-6">--}}
-                                        {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
-                                            {{--<option>Pilih Bidang Studi</option>--}}
-                                        {{--</select>--}}
-                                    {{--</div>--}}
+                                {{--<div class="col-md-6">--}}
+                                {{--<select class="form-control select" style="" name="mapel" id="id_mapel">--}}
+                                {{--<option>Pilih Bidang Studi</option>--}}
+                                {{--</select>--}}
+                                {{--</div>--}}
                                 {{--</div>--}}
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">No Telp:</label>
@@ -551,12 +551,22 @@
         $("#Form-Create-Nilai").submit(function (event) {
 
             event.preventDefault();
+
+//            var laki = $('#laki').attr('checked','checked');
+//            var perempuan = $('#perempuan').attr('checked','checked');
+//            if ($('#laki').checked = true) {
+//                console.log("LAKI");
+//                $('#perempuan').checked = false;
+//            }
+//            if ($('#perempuan').checked = true) {
+//                console.log("PEREMPUAN");
+//                $('#laki').checked = false;
+//            }
             var $form = $("#Form-Create-Nilai"),
                     id_ngajar = $form.find("input[name='id_ngajar']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='siswa']").val(),
-                    jk = $form.find("input[name='jk']").val(),
-//                    nama = $form.find("input[name='siswa']").val(),
+                    jk = $form.find("input[name='jenis_kel']").val(),
                     n_tugas = $form.find("input[name='tugas']").val(),
                     n_uts = $form.find("input[name='uts']").val(),
                     n_uas = $form.find("input[name='uas']").val();
@@ -611,7 +621,7 @@
         $("input[name='id_guru']").val(id);
 //        List Mapel
         $('#mapel-ajar').children().remove();
-        $("#mapel-ajar").append("<option>Pilih Bidang Strudy</option>")
+        $("#mapel-ajar").append("<option>Pilih Bidang Studi</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -659,10 +669,10 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/guru/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/guru/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='id_mapel']").val(data_edit.id_mapel);
@@ -752,6 +762,7 @@
 
         $("#data-nilai").children().remove();
         $("#crumb").children().remove();
+        $("#pagination-nilai").children().remove();
         $("#btn-nilai-siswa").children().remove();
         $("#btn-cari-nilai").children().remove();
 
@@ -826,7 +837,7 @@
         $("#crumb").children().remove();
         $("#btn-nilai-siswa").children().remove();
         $("#btn-cari-nilai").children().remove();
-        $("#pagination").children().remove();
+        $("#pagination-nilai").children().remove();
 
         var term = $("#search-nilai").val();
         $("#btn-nilai-siswa").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_nilai_siswa(\"" + id + "\")'>" +
@@ -915,7 +926,7 @@
 
     function getMapel() {
         $('#id_mapel').children().remove();
-        $("#id_mapel").append("<option>Pilih Bidang Strudy</option>")
+        $("#id_mapel").append("<option>Pilih Bidang Study</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -949,10 +960,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/guru/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/guru/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -1001,7 +1012,7 @@
 //                            "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
-                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
+//                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='tooltip' data-placement='top' title='Mengajar' onclick='Ajar(\"" + data.id + "\")'><i class='fa fa-group'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
@@ -1049,7 +1060,7 @@
 //                            "<td>" + data.mapel.mapel + "</td>" +
                             "<td>" + data.no_hp + "</td>" +
                             "<td>" +
-                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
+//                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(\"" + data.id + "\")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='tooltip' data-placement='top' title='Mengajar' onclick='Ajar(\"" + data.id + "\")'><i class='fa fa-group'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
