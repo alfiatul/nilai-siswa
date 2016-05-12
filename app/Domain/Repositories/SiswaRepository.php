@@ -35,21 +35,34 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
     public function create(array $data)
     {
         try {
-            $siswa = parent::create(
-                [
-                    'id_kelas' => e($data['id_kelas']),
-                    'nis'      => e($data['nis']),
-                    'nama'     => e($data['nama']),
-                    'jk'       => e($data['jk']),
-                    'agama'    => e($data['agama']),
-                    'alamat'   => e($data['alamat']),
-                ]
-            );
-            // flush cache with tags
-            $this->cache->flush(Siswa::$tags);
+            $cari = $this->model->where('nis', e($data['nis']))->count();
+
+            if ($cari > 0) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'result'  => [
+                            'message' => 'Maaf, NIS Sudah Digunakan',
+                        ],
+                    ]
+                );
+            } else {
+                $siswa = parent::create(
+                    [
+                        'id_kelas' => e($data['id_kelas']),
+                        'nis'      => e($data['nis']),
+                        'nama'     => e($data['nama']),
+                        'jk'       => e($data['jk']),
+                        'agama'    => e($data['agama']),
+                        'alamat'   => e($data['alamat']),
+                    ]
+                );
+                // flush cache with tags
+                $this->cache->flush(Siswa::$tags);
 
 
-            return $siswa;
+                return $siswa;
+            }
         } catch (\Exception $e) {
             //store errors to log
             Log::errors('class : ' . SiswaRepository::class . 'method : create | ' . $e);

@@ -12,8 +12,11 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
+    <div id="Alert">
+
+    </div>
 
     <div id="List">
         <div class="row">
@@ -95,7 +98,7 @@
 
                                     <div class="col-md-6">
                                         <input type="text" name="nis"
-                                               class="validate[required,maxSize[8]] form-control"/>
+                                               class="validate[required,maxSize[4]] form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -281,23 +284,63 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-                    jk = $form.find("input[name='jk']").val(),
+                    jk = $form.find("input[name='jk']:checked").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
 
-            var posting = $.post('/api/v1/siswa', {
-                id_kelas: id_kelas,
-                nis: nis,
-                nama: nama,
-                jk: jk,
-                agama: agama,
-                alamat: alamat,
-            });
+//            $.post('/api/v1/siswa', {
+//                id_kelas: id_kelas,
+//                nis: nis,
+//                nama: nama,
+//                jk: jk,
+//                agama: agama,
+//                alamat: alamat,
+//            });
+//
+//            //Put the results in a div
+//            posting.done(function (data) {
+//                window.alert(data.result.message);
+//                index();
+//            });
 
-            //Put the results in a div
-            posting.done(function (data) {
-                window.alert(data.result.message);
-                index();
+            $.ajax({
+                method: "POST",
+                url: '/api/v1/siswa/',
+                data: {
+                    nis: nis,
+                    nama: nama,
+                    id_kelas: id_kelas,
+                    jk: jk,
+                    agama: agama,
+                    alamat: alamat,
+                },
+                success: function (data) {
+                    $("#Alert").children().remove();
+                    if (data.success == false) {
+//                        console.log(data.result.message);
+                        $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
+                                "<button type='button' class='close' data-dismiss='alert'>" +
+                                "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button> " +data.result.message + "</div>"
+                        );
+                    }
+                    else {
+                        index();
+                        $("#Alert").append("<div class='alert alert-success' role='alert'>" +
+                                "<button type='button' class='close' data-dismiss='alert'>" +
+                                "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                                "Data Berhasil Disimpan </div>"
+                        );
+                    }
+//                    window.alert(data.result.message);
+                },
+                error: function (data) {
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Gagal Disimpan, Mohon dicek kembali inputan anda </div>"
+                    );
+                }
             });
         });
 
@@ -308,7 +351,7 @@
                     id_kelas = $form.find("select[name='kelas']").val(),
                     nis = $form.find("input[name='nis']").val(),
                     nama = $form.find("input[name='nama']").val(),
-                    jk = $form.find("input[name='jk']").val(),
+                    jk = $form.find("input[name='jk']:checked").val(),
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
 
@@ -356,10 +399,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/siswa/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/siswa/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='nis']").val(data_edit.nis);
@@ -442,13 +485,18 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/siswa/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/siswa/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
-                        window.alert(data.result.message);
+//                        window.alert(data.result.message);
+                        $("#Alert").append("<div class='alert alert-success' role='alert'>" +
+                                "<button type='button' class='close' data-dismiss='alert'>" +
+                                "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                                "Data Berhasil Dihapus </div>"
+                        );
                         getAjax();
                     });
 
@@ -494,7 +542,7 @@
                     if (data.jk == 'P') {
                         jk = 'Perempuan';
                     }
-                    $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                    $("#row").append("<tr><td>" + data.nis + "</td>" +
                             "<td>" + data.nama + "</td>" +
                             "<td>" + data.kelas.kelas + " " + data.kelas.jurusan.jurusan + "</td>" +
                             "<td>" + jk + "</td>" +
@@ -553,8 +601,8 @@
                             "<td>" + data.nama + "</td>" +
                             "<td>" + data.kelas.kelas + " " + data.kelas.jurusan.jurusan + "</td>" +
                             "<td>" + jk + "</td>" +
-                            "<td>" + data.agama + "</td>" +
-                            "<td>" + data.alamat + "</td>" +
+//                            "<td>" + data.agama + "</td>" +
+//                            "<td>" + data.alamat + "</td>" +
                             "<td>" +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");

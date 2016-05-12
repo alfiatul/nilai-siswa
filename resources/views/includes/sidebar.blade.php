@@ -25,9 +25,9 @@
     <li>
         <a href="guru"><span class="fa fa-user"></span> <span class="xn-text">Guru</span></a>
     </li>
-    {{--<li>--}}
-    {{--<a href="siswa"><span class="fa fa-users"></span><span class="xn-text">Siswa</span></a>--}}
-    {{--</li>--}}
+    <li>
+        <a href="siswa"><span class="fa fa-users"></span><span class="xn-text">Siswa</span></a>
+    </li>
     <li>
         <a href="kelas"><span class="fa fa-building-o"></span><span class="xn-text">Kelas</span></a>
     </li>

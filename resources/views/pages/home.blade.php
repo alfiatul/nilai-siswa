@@ -13,14 +13,19 @@
     <div class="panel panel-default panel-hidden-controls">
         <div id="List">
             <div class="panel-heading">
-                <h3 class="panel-title">Daftar Nilai Siswa SMK Negeri 1 Kepanjen</h3>
+                <h3 class="panel-title">Aplikasi Penilaian Siswa SMK Negeri 1 Kepanjen</h3>
                 <ul class="panel-controls">
                     <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
                     <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
                     <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
                 </ul>
             </div>
-
+            <div class="panel-body">
+                <center>
+                    <img src="{!! asset('assets/assets/images/kanesa.png') !!}" alt="John Doe" width="100%"
+                         height="100%" style="max-height: 400px; max-width: 422px;"/>
+                </center>
+            </div>
         </div>
     </div>
 </div>

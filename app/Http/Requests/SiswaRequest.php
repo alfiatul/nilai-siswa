@@ -21,7 +21,7 @@ class SiswaRequest extends Request
     {
         return [
             'id_kelas' => 'required',
-            'nis'      => 'required',
+            'nis'      => 'required|digits:4',
             'nama'     => 'required',
             'jk'       => 'required',
             'agama'    => 'required',
