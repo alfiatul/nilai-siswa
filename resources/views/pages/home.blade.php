@@ -6,7 +6,7 @@
 <ul class="breadcrumb">
     <li><a href="#">Home</a></li>
 </ul>
-<!-- END BREADCRUMB -->
+        <!-- END BREADCRUMB -->
 
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap">
