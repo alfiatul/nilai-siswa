@@ -22,10 +22,10 @@ class NilaiRequest extends Request
         return [
             'id_siswa' => '',
             'id_mapel' => '',
-            'n_tugas'  => 'required',
-            'n_uts'    => 'required',
-            'n_uas'    => 'required',
-            'n_akhir'  => '',
+            'n_tugas'  => 'required|numeric|max:100|min:0',
+            'n_uts'    => 'required|numeric|max:100|min:0',
+            'n_uas'    => 'required|numeric|max:100|min:0',
+            'n_akhir'  => 'numeric|max:100|min:0',
         ];
     }
 
