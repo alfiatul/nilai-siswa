@@ -31,6 +31,10 @@
                     <br>
 
                     <div class="panel-body">
+                        <button type="button" class="btn btn-sm btn-default" style="margin-bottom: 10px;"
+                                onclick="getAjax();">
+                            <i class="fa fa-refresh"></i>
+                        </button>
                         <div class="input-group col-md-3 push-down-10 pull-right">
                             <input type="text" class="form-control" placeholder="Keywords..." id="search"/>
 

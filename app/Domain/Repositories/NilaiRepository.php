@@ -61,23 +61,11 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
     {
         try {
             $mengajar = \DB::table('mengajar')->where('id', $id)->first();
-
             $na = (0.5 * (e($data['n_tugas']))) + (0.2 * (e($data['n_uts']))) + (0.3 * (e($data['n_uas'])));
-            Siswa::create([
-                    'id_kelas' => $mengajar->id_kelas,
-                    'nis'      => e($data['nis']),
-                    'nama'     => e($data['nama']),
-                    'jk'       => e($data['jk']),
-                    'agama'    => '',
-                    'alamat'   => '',
-                ]
-            );
-
-            $id_siswa = \DB::table('siswa')->where('nis', e($data['nis']))->first();
 
             $nilai = parent::create(
                 [
-                    'id_siswa' => $id_siswa->id,
+                    'id_siswa' => e($data['id_siswa']),
                     'id_mapel' => $mengajar->id_mapel,
                     'n_tugas'  => e($data['n_tugas']),
                     'n_uts'    => e($data['n_uts']),
@@ -87,7 +75,7 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
             );
             // flush cache with tags
             $this->cache->flush(Nilai::$tags);
-            $this->cache->flush(Siswa::$tags);
+
             return $nilai;
         } catch (\Exception $e) {
             //store errors to log

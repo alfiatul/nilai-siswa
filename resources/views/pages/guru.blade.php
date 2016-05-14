@@ -7,13 +7,13 @@
 {{--<li class="active">Guru</li>--}}
 
 {{--</ul>--}}
-<!-- END BREADCRUMB -->
+        <!-- END BREADCRUMB -->
 
 {{--<div class="page-title">--}}
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 700px;">
 
     <div id="List">
@@ -246,35 +246,15 @@
                                 <input type="hidden" name="id_ngajar">
 
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">NIS:</label>
+                                    <label class="col-md-3 control-label">NIS :</label>
 
                                     <div class="col-md-6">
-                                        <input type="text" name="nis"
-                                               class="validate[required,custom[integer],min[18],max[120]] form-control"/>
+                                        <select class="form-control select" style="" name="nis" id="nis">
+                                            <option selected>Pilih Siswa</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Nama Siswa:</label>
 
-                                    <div class="col-md-6">
-                                        <input type="text" name="siswa"
-                                               class="validate[required,custom[integer],min[18],max[120]] form-control"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Jenis Kelamin:</label>
-
-                                    <div class="col-md-4">
-                                        <label class="check">
-                                            <input type="radio" name="jk" class="iradio" value="L"/> Laki-Laki
-                                        </label>
-
-                                        <label class="check">
-                                            <input type="radio" name="jk" class="iradio" value="P"/>
-                                            Perempuan
-                                        </label>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nilai Tugas:</label>
 
@@ -544,19 +524,14 @@
 
             var $form = $("#Form-Create-Nilai"),
                     id_ngajar = $form.find("input[name='id_ngajar']").val(),
-                    nis = $form.find("input[name='nis']").val(),
-                    nama = $form.find("input[name='siswa']").val(),
-                    jk = $form.find("input[name='jk']:checked").val(),
+                    id_siswa = $form.find("select[name='nis']").val(),
                     n_tugas = $form.find("input[name='tugas']").val(),
                     n_uts = $form.find("input[name='uts']").val(),
                     n_uas = $form.find("input[name='uas']").val();
 
-//            $("#Simpan-Nilai").click(function () {
             var posting = $.post('/api/v1/nilai-by-mengajar/' + id_ngajar, {
                 id_ngajar: id_ngajar,
-                nis: nis,
-                nama: nama,
-                jk: jk,
+                id_siswa: id_siswa,
                 n_tugas: n_tugas,
                 n_uts: n_uts,
                 n_uas: n_uas
@@ -567,7 +542,6 @@
                 window.alert(data.result.message);
                 Nilai(id_ngajar);
             });
-//            });
         });
 
         // Edit Nilai Siswa
@@ -671,13 +645,21 @@
         $("input[name='id_ngajar']").val(id);
 
         $.ajax({
-            method: "Get",
-            url: '/api/v1/mengajar/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/mengajar/' + id,
+                    data: {}
+                })
                 .done(function (data_ajar) {
-                    console.log('kelas : ' + data_ajar.id_kelas);
-                    console.log('mapel : ' + data_ajar.id_mapel);
+//                    console.log('kelas : ' + data_ajar.id_kelas);
+//                    console.log('mapel : ' + data_ajar.id_mapel);
+                    $('#nis').children().remove();
+                    $("#nis").append("<option value=''>Pilih Siswa</option>")
+                    $.getJSON("/api/v1/list-siswa-by-nilai/" + data_ajar.id_kelas + "/" + data_ajar.id_mapel, function (data) {
+                        var jumlah = data.length;
+                        $.each(data.slice(0, jumlah), function (i, data) {
+                            $("#nis").append("<option value='" + data.id + "'>" + data.nis + " | " + data.nama + "</option>")
+                        })
+                    })
                 });
     }
 
@@ -694,10 +676,10 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/guru/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/guru/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='id_mapel']").val(data_edit.id_mapel);
@@ -757,10 +739,10 @@
                 // Add info
                 // Add info
                 $.ajax({
-                    method: "Get",
-                    url: '/api/v1/guru/' + id,
-                    data: {}
-                })
+                            method: "Get",
+                            url: '/api/v1/guru/' + id,
+                            data: {}
+                        })
                         .done(function (data_guru) {
                             $("#info-guru").append("<table style='text-align: left;'>" +
                                     "<tr>" +
@@ -829,10 +811,10 @@
 
                 // Add info
                 $.ajax({
-                    method: "Get",
-                    url: '/api/v1/mengajar/' + id,
-                    data: {}
-                })
+                            method: "Get",
+                            url: '/api/v1/mengajar/' + id,
+                            data: {}
+                        })
                         .done(function (data_ajar) {
                             $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
                                     "<li><a href='#' onclick='index()'>Guru</a></li>" +
@@ -1049,10 +1031,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/guru/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/guru/' + id,
+                        data: {}
+                    })
                     .done(function (data) {
                         window.alert(data.result.message);
                         getAjax();
