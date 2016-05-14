@@ -188,4 +188,53 @@ class SiswaRepository extends AbstractRepository implements Paginable, Crudable
 
         return $data;
     }
+
+    public function getListByNilai($kelas, $mapel)
+    {
+        // set key
+        $key = 'siswa-get-list-by-nilai' . $kelas . $mapel;
+
+        // has section and key
+        if ($this->cache->has(Siswa::$tags, $key)) {
+            return $this->cache->get(Siswa::$tags, $key);
+        }
+
+        $cari = \DB::table('nilai')
+            ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+            ->where('nilai.id_mapel', $mapel)
+            ->where('siswa.id_kelas', $kelas)
+            ->select('nilai.id_siswa')
+            ->get();
+
+        // --> Convert StdClass to Array
+        $result = [];
+        foreach ($cari as $key => $value) {
+            $result[] = $value->id_siswa;
+        }
+
+        // --> Flatenned the first array
+        $siswa = [];
+        $array_length = count($result);
+        for ($i = 0; $i <= $array_length - 1; $i++) {
+            array_push($siswa, $result[$i]);
+        }
+
+        // query to sql
+        $data = $this->model
+            ->where('id_kelas', $kelas)
+//            ->whereNotIn('id', $siswa)
+            ->whereNotIn('id', function ($q) use ($kelas, $mapel) {
+                $q->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                    ->where('nilai.id_mapel', $mapel)
+                    ->where('siswa.id_kelas', $kelas)
+                    ->select('nilai.id_siswa')
+                    ->from('nilai');
+            })
+            ->get();
+
+        // store to cache
+//        $this->cache->put(Siswa::$tags, $key, $data, 10);
+
+        return $data;
+    }
 }

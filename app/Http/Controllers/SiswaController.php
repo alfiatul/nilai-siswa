@@ -56,4 +56,9 @@ class SiswaController extends Controller
     {
         return $this->siswa->getListBykelas($id);
     }
+
+    public function getSiswaByNilai($kelas, $mapel)
+    {
+        return $this->siswa->getListByNilai($kelas, $mapel);
+    }
 }

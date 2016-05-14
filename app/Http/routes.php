@@ -44,6 +44,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('list-kelas', 'KelasController@getList');
     Route::get('list-siswa', 'SiswaController@getList');
     Route::get('list-siswa-by-kelas/{kelas}', 'SiswaController@getListBykelas');
+    Route::get('list-siswa-by-nilai/{kelas}/{mapel}', 'SiswaController@getSiswaByNilai');
     Route::get('mengajar-by-guru/{guru}', 'MengajarController@getByGuru');
     Route::get('nilai-by-mengajar/{guru}', 'NilaiController@getByAjar');
     Route::post('nilai-by-mengajar/{guru}', 'NilaiController@createByMengajar');

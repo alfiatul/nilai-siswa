@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
     <div id="Alert">
 
@@ -320,7 +320,7 @@
 //                        console.log(data.result.message);
                         $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
                                 "<button type='button' class='close' data-dismiss='alert'>" +
-                                "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button> " +data.result.message + "</div>"
+                                "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button> " + data.result.message + "</div>"
                         );
                     }
                     else {
@@ -399,10 +399,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/siswa/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/siswa/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='nis']").val(data_edit.nis);
@@ -485,10 +485,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/siswa/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/siswa/' + id,
+                data: {}
+            })
 
                     .done(function (data) {
 //                        window.alert(data.result.message);
@@ -597,13 +597,14 @@
                     if (data.jk == 'P') {
                         jk = 'Perempuan';
                     }
-                    $("#row").append("<tr><td>" + (i + 1) + "</td>" +
+                    $("#row").append("<tr><td>" + data.nis + "</td>" +
                             "<td>" + data.nama + "</td>" +
                             "<td>" + data.kelas.kelas + " " + data.kelas.jurusan.jurusan + "</td>" +
                             "<td>" + jk + "</td>" +
-//                            "<td>" + data.agama + "</td>" +
-//                            "<td>" + data.alamat + "</td>" +
+                            "<td>" + data.agama + "</td>" +
+                            "<td>" + data.alamat + "</td>" +
                             "<td>" +
+//                            "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' data-toggle='modal' data-target='#myModal' onclick='Detail(" + data.id + ")'><i class='fa fa-eye'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Edit(\"" + data.id + "\")'><i class='fa fa-edit'></i></button> " +
                             "<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='Hapus(\"" + data.id + "\")'><i class='fa fa-trash-o'></i></button></td></tr>");
                 })

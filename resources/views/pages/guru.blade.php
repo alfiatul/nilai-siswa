@@ -91,7 +91,11 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Daftar Bidang Studi Guru</h3>
+                        <h3 class="panel-title">Daftar Bidang Studi Guru</h3> <br><br>
+
+                        <div class='col-md-4 label label-primary' id="info-guru">
+
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div id="btn-mapel-guru">
@@ -181,7 +185,11 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Daftar Nilai Siswa</h3>
+                        <h3 class="panel-title">Daftar Nilai Siswa</h3> <br><br>
+
+                        <div class='col-md-4 label label-primary' id="info-nilai">
+
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div id="btn-nilai-siswa">
@@ -661,6 +669,16 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $("input[name='id_ngajar']").val(id);
+
+        $.ajax({
+            method: "Get",
+            url: '/api/v1/mengajar/' + id,
+            data: {}
+        })
+                .done(function (data_ajar) {
+                    console.log('kelas : ' + data_ajar.id_kelas);
+                    console.log('mapel : ' + data_ajar.id_mapel);
+                });
     }
 
     function Edit(id) {
@@ -724,6 +742,7 @@
 
         $("#btn-mapel-guru").children().remove();
         $("#data-mengajar").children().remove();
+        $("#info-guru").children().remove();
         $("#btn-mapel-guru").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_ajar(\"" + id + "\")'>" +
                 "<i class='fa fa-plus'></i></button>");
         $("#loader2").delay(2000).animate({
@@ -734,6 +753,28 @@
         setTimeout(function () {
             $.getJSON("/api/v1/mengajar-by-guru/" + id, function (data) {
                 var jumlah = data.data.length;
+
+                // Add info
+                // Add info
+                $.ajax({
+                    method: "Get",
+                    url: '/api/v1/guru/' + id,
+                    data: {}
+                })
+                        .done(function (data_guru) {
+                            $("#info-guru").append("<table style='text-align: left;'>" +
+                                    "<tr>" +
+                                    "<td style='padding: 5px;'>Nama Guru</td> " +
+                                    "<td style='padding: 5px;'>:</td> " +
+                                    "<td style='padding: 5px;'>" + data_guru.nama + "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td style='padding: 5px;'>Nomor Telpon</td> " +
+                                    "<td style='padding: 5px;'>:</td> " +
+                                    "<td style='padding: 5px;'>" + data_guru.no_hp + "</td>" +
+                                    "</tr>" +
+                                    "</table>");
+                        });
 
                 $.each(data.data.slice(0, jumlah), function (i, data) {
                     $("#data-mengajar").append("<tr><td>" + (i + 1) + "</td>" +
@@ -769,6 +810,7 @@
 
         $("#data-nilai").children().remove();
         $("#crumb").children().remove();
+        $("#info-nilai").children().remove();
         $("#pagination-nilai").children().remove();
         $("#btn-nilai-siswa").children().remove();
         $("#btn-cari-nilai").children().remove();
@@ -784,11 +826,38 @@
         setTimeout(function () {
             $.getJSON("/api/v1/nilai-by-mengajar/" + id, function (data) {
                 var jumlah = data.data.length;
-                $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
-                        "<li><a href='#' onclick='index()'>Guru</a></li>" +
-                        "<li><a href='#' onclick='Ajar(\"" + data.data[0].id_guru + "\")'>Bidang Studi Guru</a></li>" +
-                        "<li class='active'>Nilai Siswa</li>" +
-                        "</ul>");
+
+                // Add info
+                $.ajax({
+                    method: "Get",
+                    url: '/api/v1/mengajar/' + id,
+                    data: {}
+                })
+                        .done(function (data_ajar) {
+                            $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
+                                    "<li><a href='#' onclick='index()'>Guru</a></li>" +
+                                    "<li><a href='#' onclick='Ajar(\"" + data_ajar.id_guru + "\")'>Bidang Studi Guru</a></li>" +
+                                    "<li class='active'>Nilai Siswa</li>" +
+                                    "</ul>");
+
+                            $("#info-nilai").append("<table style='text-align: left;'>" +
+                                    "<tr>" +
+                                    "<td style='padding: 5px;'>Kelas</td> " +
+                                    "<td style='padding: 5px;'>:</td> " +
+                                    "<td style='padding: 5px;'>" + data_ajar.kelas.kelas + " " + data_ajar.kelas.jurusan.jurusan + "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td style='padding: 5px;'>Bidang Studi</td> " +
+                                    "<td style='padding: 5px;'>:</td> " +
+                                    "<td style='padding: 5px;'>" + data_ajar.mapel.mapel + "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                    "<td style='padding: 5px;'>KKM</td> " +
+                                    "<td style='padding: 5px;'>:</td> " +
+                                    "<td style='padding: 5px;'>" + data_ajar.mapel.kkm + "</td>" +
+                                    "</tr>" +
+                                    "</table>");
+                        });
 
                 // Init pagination
                 $("#pagination-nilai").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
@@ -845,7 +914,6 @@
 
     function getDataNilai(id, page) {
         $("#data-nilai").children().remove();
-        $("#crumb").children().remove();
         $("#btn-nilai-siswa").children().remove();
         $("#btn-cari-nilai").children().remove();
         $("#pagination-nilai").children().remove();
@@ -862,11 +930,6 @@
         setTimeout(function () {
             $.getJSON("/api/v1/nilai-by-mengajar/" + id + "?page=" + page + "&term=" + term, function (data) {
                 var jumlah = data.data.length;
-                $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
-                        "<li><a href='#' onclick='index()'>Guru</a></li>" +
-                        "<li><a href='#' onclick='Ajar(\"" + data.data[0].id_guru + "\")'>Bidang Studi Guru</a></li>" +
-                        "<li class='active'>Nilai Siswa</li>" +
-                        "</ul>");
 
                 // Init pagination
                 $("#pagination-nilai").append("<ul class='pagination pagination-sm'><li class='disabled'><a href='#'>&laquo;</a></li></ul>");
