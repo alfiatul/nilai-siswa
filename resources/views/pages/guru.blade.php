@@ -7,21 +7,26 @@
 {{--<li class="active">Guru</li>--}}
 
 {{--</ul>--}}
-        <!-- END BREADCRUMB -->
+<!-- END BREADCRUMB -->
 
 {{--<div class="page-title">--}}
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
+<div id="crumb">
 
-        <!-- PAGE CONTENT WRAPPER -->
+</div>
+
+<div id="Alert">
+
+</div>
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 700px;">
-
     <div id="List">
-        <ul class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li class="active">Guru</li>
+        {{--<ul class="breadcrumb">--}}
+        {{--<li><a href="/">Home</a></li>--}}
+        {{--<li class="active">Guru</li>--}}
 
-        </ul>
+        {{--</ul>--}}
         <div class="row">
             <div class="col-md-12">
 
@@ -80,12 +85,12 @@
     </div>
 
     <div id="Ajar">
-        <ul class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li><a href="#" onclick="index()">Guru</a></li>
-            <li class="active">Bidang Studi Guru</li>
+        {{--<ul class="breadcrumb">--}}
+        {{--<li><a href="/">Home</a></li>--}}
+        {{--<li><a href="#" onclick="index()">Guru</a></li>--}}
+        {{--<li class="active">Bidang Studi Guru</li>--}}
 
-        </ul>
+        {{--</ul>--}}
         <div class="row">
             <div class="col-md-12">
 
@@ -163,7 +168,7 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Simpan-Ajar">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="BackAjar()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="BackAjar()">Kembali</button>
                                 </div>
                             </form>
                         </div>
@@ -176,9 +181,6 @@
     </div>
 
     <div id="Nilai">
-        <div id="crumb">
-
-        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -282,7 +284,9 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Simpan-Nilai">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="BackNilai()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="BackNilai()"
+                                            id="Kembali-Nilai">Kembali
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -304,7 +308,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8">
-                            <form id="Form-Create" role="form" class="form-horizontal">
+                            <form id="Form-Create" role="form" class="form-horizontal" method="post">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nama:</label>
 
@@ -332,7 +336,7 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Simpan">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="index()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="index()">Kembali</button>
                                 </div>
                             </form>
                         </div>
@@ -432,10 +436,10 @@
     $(document).ready(function () {
         var currentRequest = null;
         index();
-        $("#Simpan").click(function (event) {
+        $("#Form-Create").submit(function (event) {
 
             event.preventDefault();
-            var $form = $("#Form-Create"),
+            var $form = $(this),
 //                    id_mapel = $form.find("select[name='mapel']").val(),
                     id_mapel = '',
                     kode_guru = '',
@@ -529,18 +533,35 @@
                     n_uts = $form.find("input[name='uts']").val(),
                     n_uas = $form.find("input[name='uas']").val();
 
-            var posting = $.post('/api/v1/nilai-by-mengajar/' + id_ngajar, {
-                id_ngajar: id_ngajar,
-                id_siswa: id_siswa,
-                n_tugas: n_tugas,
-                n_uts: n_uts,
-                n_uas: n_uas
-            });
+            $.ajax({
+                method: "POST",
+                url: '/api/v1/nilai-by-mengajar/' + id_ngajar,
+                data: {
+                    id_ngajar: id_ngajar,
+                    id_siswa: id_siswa,
+                    n_tugas: n_tugas,
+                    n_uts: n_uts,
+                    n_uas: n_uas
+                },
+                success: function (data) {
 
-//            //Put the results in a div
-            posting.done(function (data) {
-                window.alert(data.result.message);
-                Nilai(id_ngajar);
+                    Nilai(id_ngajar);
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-success' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Berhasil Disimpan </div>"
+                    );
+
+                },
+                error: function (data) {
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Gagal Disimpan, Mohon cek kembali inputan anda </div>"
+                    );
+                }
             });
         });
 
@@ -569,12 +590,24 @@
                     }
                 },
                 success: function (data) {
-                    window.alert(data.result.message);
+//                    window.alert(data.result.message);
                     Nilai(ajar);
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-success' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Berhasil Diubah </div>"
+                    );
                 },
                 error: function (data) {
-                    window.alert(data.result.message);
+//                    window.alert(data.result.message);
                     Nilai(ajar);
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Gagal Disimpan, Mohon cek kembali inputan anda </div>"
+                    );
                 }
             });
         });
@@ -638,6 +671,7 @@
         $('#Nilai').hide();
         $('#Create-Ajar').hide();
         $('#Create-Nilai').show();
+        $('#Alert').children().remove();
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         document.getElementById("Form-Create-Ajar").reset();
@@ -645,10 +679,10 @@
         $("input[name='id_ngajar']").val(id);
 
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/mengajar/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/mengajar/' + id,
+            data: {}
+        })
                 .done(function (data_ajar) {
 //                    console.log('kelas : ' + data_ajar.id_kelas);
 //                    console.log('mapel : ' + data_ajar.id_mapel);
@@ -676,10 +710,10 @@
         document.getElementById("Form-Create-Ajar").reset();
         document.getElementById("Form-Create-Nilai").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/guru/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/guru/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='id_mapel']").val(data_edit.id_mapel);
@@ -723,10 +757,15 @@
         document.getElementById("Form-Create-Nilai").reset();
 
         $("#btn-mapel-guru").children().remove();
+        $("#crumb").children().remove();
         $("#data-mengajar").children().remove();
         $("#info-guru").children().remove();
         $("#btn-mapel-guru").append("<button type='button' class='btn btn-sm btn-default' style='margin-bottom: 10px;' onclick='tambah_ajar(\"" + id + "\")'>" +
                 "<i class='fa fa-plus'></i></button>");
+        $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
+                "<li><a href='#' onclick='index()'>Guru</a></li>" +
+                "<li class='active'>Bidang Studi Guru</li>" +
+                "</ul>");
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
@@ -737,12 +776,11 @@
                 var jumlah = data.data.length;
 
                 // Add info
-                // Add info
                 $.ajax({
-                            method: "Get",
-                            url: '/api/v1/guru/' + id,
-                            data: {}
-                        })
+                    method: "Get",
+                    url: '/api/v1/guru/' + id,
+                    data: {}
+                })
                         .done(function (data_guru) {
                             $("#info-guru").append("<table style='text-align: left;'>" +
                                     "<tr>" +
@@ -811,10 +849,10 @@
 
                 // Add info
                 $.ajax({
-                            method: "Get",
-                            url: '/api/v1/mengajar/' + id,
-                            data: {}
-                        })
+                    method: "Get",
+                    url: '/api/v1/mengajar/' + id,
+                    data: {}
+                })
                         .done(function (data_ajar) {
                             $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
                                     "<li><a href='#' onclick='index()'>Guru</a></li>" +
@@ -1005,6 +1043,7 @@
             },
             success: function (data) {
 //                $("#loader-wrapper").hide();
+                $('#Alert').children().remove();
                 $("#modal-body").children().remove();
                 if (data.siswa.jk == 'L') {
                     var jk = 'Laki-Laki';
@@ -1031,10 +1070,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/guru/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/guru/' + id,
+                data: {}
+            })
                     .done(function (data) {
                         window.alert(data.result.message);
                         getAjax();
@@ -1045,7 +1084,12 @@
 
     function getAjax() {
         $("#row").children().remove();
+        $("#crumb").children().remove();
         $("#pagination-guru").children().remove();
+
+        $("#crumb").append("<ul class='breadcrumb'><li><a href='/'>Home</a></li>" +
+                "<li class='active'>Guru</li>" +
+                "</ul>");
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,

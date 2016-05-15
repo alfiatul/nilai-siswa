@@ -92,7 +92,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8">
-                            <form id="Form-Create" role="form" class="form-horizontal">
+                            <form id="Form-Create" role="form" class="form-horizontal" method="post">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Nis:</label>
 
@@ -150,7 +150,9 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Simpan">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="index()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="index();">
+                                        Kembali
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -233,7 +235,7 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="index()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="index()">Kembali</button>
                                 </div>
                             </form>
                         </div>
@@ -288,21 +290,6 @@
                     agama = $form.find("input[name='agama']").val(),
                     alamat = $form.find("input[name='alamat']").val();
 
-//            $.post('/api/v1/siswa', {
-//                id_kelas: id_kelas,
-//                nis: nis,
-//                nama: nama,
-//                jk: jk,
-//                agama: agama,
-//                alamat: alamat,
-//            });
-//
-//            //Put the results in a div
-//            posting.done(function (data) {
-//                window.alert(data.result.message);
-//                index();
-//            });
-
             $.ajax({
                 method: "POST",
                 url: '/api/v1/siswa/',
@@ -315,9 +302,10 @@
                     alamat: alamat,
                 },
                 success: function (data) {
-                    $("#Alert").children().remove();
+
                     if (data.success == false) {
 //                        console.log(data.result.message);
+                        $("#Alert").children().remove();
                         $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
                                 "<button type='button' class='close' data-dismiss='alert'>" +
                                 "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button> " + data.result.message + "</div>"
@@ -325,6 +313,7 @@
                     }
                     else {
                         index();
+                        $("#Alert").children().remove();
                         $("#Alert").append("<div class='alert alert-success' role='alert'>" +
                                 "<button type='button' class='close' data-dismiss='alert'>" +
                                 "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
@@ -338,7 +327,7 @@
                     $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
                             "<button type='button' class='close' data-dismiss='alert'>" +
                             "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
-                            "Data Gagal Disimpan, Mohon dicek kembali inputan anda </div>"
+                            "Data Gagal Disimpan, Mohon cek kembali inputan anda </div>"
                     );
                 }
             });
@@ -372,12 +361,22 @@
                     }
                 },
                 success: function (data) {
-                    window.alert(data.result.message);
+                    $("#Alert").children().remove();
                     index();
+                    $("#Alert").append("<div class='alert alert-success' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Berhasil Disimpan </div>"
+                    );
                 },
                 error: function (data) {
-                    window.alert(data.result.message);
-                    index();
+//                    index();
+                    $("#Alert").children().remove();
+                    $("#Alert").append("<div class='alert alert-danger' role='alert'>" +
+                            "<button type='button' class='close' data-dismiss='alert'>" +
+                            "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
+                            "Data Gagal Disimpan, Mohon dicek kembali inputan anda </div>"
+                    );
                 }
             });
         });
@@ -386,6 +385,7 @@
 
     function tambah() {
         $('#Create').show();
+        $('#Alert').children().remove();
         document.getElementById("Form-Create").reset();
         $('#Edit').hide();
         $('#List').hide();
@@ -396,6 +396,7 @@
         $('#Create').hide();
         $('#Edit').show();
         $('#List').hide();
+        $('#Alert').children().remove();
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
