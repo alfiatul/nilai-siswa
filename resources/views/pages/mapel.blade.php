@@ -80,7 +80,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8" style="margin-left: 0px;">
-                            <form id="Form-Create" role="form" class="form-horizontal">
+                            <form id="Form-Create" role="form" class="form-horizontal" method="post">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Bidang Study:</label>
 
@@ -122,7 +122,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8">
-                            <form id="Form-Edit" role="form" class="form-horizontal">
+                            <form id="Form-Edit" role="form" class="form-horizontal" method="post">
                                 <input type="hidden" name="id">
 
                                 <div class="form-group">
@@ -162,10 +162,10 @@
     $(document).ready(function () {
         var currentRequest = null;
         index();
-        $("#Simpan").click(function (event) {
+        $("#Form-Create").submit(function (event) {
 
             event.preventDefault();
-            var $form = $("#Form-Create"),
+            var $form = $(this),
                     mapel = $form.find("input[name='mapel']").val(),
                     kkm = $form.find("input[name='kkm']").val();
 

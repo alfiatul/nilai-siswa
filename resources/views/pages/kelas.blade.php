@@ -81,7 +81,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8">
-                            <form id="Form-Create" role="form" class="form-horizontal">
+                            <form id="Form-Create" role="form" class="form-horizontal" method="post">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Kelas:</label>
 
@@ -110,7 +110,7 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Simpan">Simpan</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="index()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="index()">Kembali</button>
                                 </div>
                             </form>
                         </div>
@@ -132,7 +132,7 @@
                     <div class="panel-body">
                         <!-- START VALIDATIONENGINE PLUGIN -->
                         <div class="block col-md-8">
-                            <form id="Form-Edit" role="form" class="form-horizontal">
+                            <form id="Form-Edit" role="form" class="form-horizontal" method="post">
                                 <input type="hidden" name="id">
 
                                 <div class="form-group">
@@ -163,7 +163,7 @@
                                 <div class="block" style="margin-left: 260px;">
                                     <button class="btn btn-primary" type="submit" id="Edit">Edit</button>
                                     &nbsp;&nbsp;
-                                    <button class="btn btn-primary" onclick="index()">Kembali</button>
+                                    <button class="btn btn-primary" type="button" onclick="index()">Kembali</button>
                                 </div>
                             </form>
                         </div>
@@ -183,10 +183,10 @@
     $(document).ready(function () {
         var currentRequest = null;
         index();
-        $("#Simpan").click(function (event) {
+        $("#Form-Create").submit(function (event) {
 
             event.preventDefault();
-            var $form = $("#Form-Create"),
+            var $form = $(this),
                     id_jurusan = $form.find("select[name='jurusan']").val(),
                     kelas = $form.find("input[name='kelas']").val(),
                     jml = $form.find("input[name='jml']").val();
