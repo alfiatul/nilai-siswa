@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-        <!-- PAGE CONTENT WRAPPER -->
+<!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -44,8 +44,13 @@
                             </div>
                         </div>
                         <div class="col-md-3 push-down-10 pull-right">
-                            <select class="form-control select kelas" style="" name="kelas">
-                                <option>Pilih kelas</option>
+                            <select class="form-control" style="" name="kelas" id="kelas">
+                                <option value="">Pilih kelas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 push-down-10 pull-right">
+                            <select class="form-control" style="" name="mapel" id="id_mapel">
+                                <option value="">Pilih Bidang Studi</option>
                             </select>
                         </div>
                         <table class="table table-hover ">
@@ -348,6 +353,7 @@
         document.getElementById("Form-Edit").reset();
         getAjax();
         getKelas();
+        getMapel();
     }
 
 
@@ -358,10 +364,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-                    method: "Get",
-                    url: '/api/v1/nilai/' + id,
-                    data: {}
-                })
+            method: "Get",
+            url: '/api/v1/nilai/' + id,
+            data: {}
+        })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='siswa']").val(data_edit.siswa.nama);
@@ -418,10 +424,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                        method: "DELETE",
-                        url: '/api/v1/nilai/' + id,
-                        data: {}
-                    })
+                method: "DELETE",
+                url: '/api/v1/nilai/' + id,
+                data: {}
+            })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -504,13 +510,26 @@
         $("#pagination").children().remove();
         var term = $("#search").val();
         var kelas = $("select[name='kelas']").val();
+        var mapel = $("select[name='mapel']").val();
+        if (kelas == '' || kelas == null) {
+            var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&mapel=" + mapel;
+        }
+        else if (mapel == '' || mapel == null) {
+            var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas;
+        }
+        else if (mapel != '' && kelas != '') {
+            var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas + "&mapel=" + mapel;
+        }
+        else {
+            var url = "/api/v1/nilai?page=" + page + "&term=" + term;
+        }
         $("#loader2").delay(2000).animate({
             opacity: 0,
             width: 0,
             height: 0
         }, 500);
         setTimeout(function () {
-            $.getJSON("/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas, function (data) {
+            $.getJSON(url, function (data) {
                 var jumlah = data.data.length;
 
                 // Init pagination
@@ -571,7 +590,7 @@
 
     function getMapel() {
         $('#id_mapel').children().remove();
-        $("#id_mapel").append("<option>Pilih Bidang Study</option>")
+        $("#id_mapel").append("<option value=''>Pilih Bidang Study</option>")
         $.getJSON("/api/v1/list-mapel", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
@@ -581,12 +600,12 @@
     }
 
     function getKelas() {
-        $('.kelas').children().remove();
-        $(".kelas").append("<option value=''>Pilih Kelas</option>")
+        $('#kelas').children().remove();
+        $("#kelas").append("<option value=''>Pilih Kelas</option>")
         $.getJSON("/api/v1/list-kelas", function (data) {
             var jumlah = data.length;
             $.each(data.slice(0, jumlah), function (i, data) {
-                $(".kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
+                $("#kelas").append("<option value='" + data.id + "'>" + data.kelas + " " + data.jurusan.jurusan + "</option>")
             })
         })
     }

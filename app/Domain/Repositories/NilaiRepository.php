@@ -127,10 +127,10 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
     }
 
 
-    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '', $kelas = '')
+    public function getByPage($limit = 10, $page = 1, array $column = ['*'], $field, $search = '', $kelas = '', $mapel = '')
     {
         // set key
-        $key = 'nilai-get-by-page' . $limit . $page . $search . $kelas;
+        $key = 'nilai-get-by-page' . $limit . $page . $search . $kelas . $mapel;
 
         // has section and key
         if ($this->cache->has(Nilai::$tags, $key)) {
@@ -138,10 +138,32 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
         }
 
         // query to sql
-        if ($kelas == '' || $kelas == null) {
+        if ($mapel != null) {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mapel', 'nilai.id_mapel', '=', 'mapel.id')
+                ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->where('mapel.id', '=', $mapel)
+                ->select('nilai.*')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else if ($kelas != null) {
             $organisasi = $this->model
                 ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
                 ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->where('siswa.id_kelas', $kelas)
+                ->select('nilai.*')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else if ($kelas != null && $mapel != null) {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mapel', 'nilai.id_mapel', '=', 'mapel.id')
+                ->where('siswa.nama', 'like', '%' . $search . '%')
+                ->where('siswa.id_kelas', $kelas)
+                ->where('mapel.id', $mapel)
                 ->select('nilai.*')
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
@@ -150,7 +172,6 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
             $organisasi = $this->model
                 ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
                 ->where('siswa.nama', 'like', '%' . $search . '%')
-                ->where('siswa.id_kelas', $kelas)
                 ->select('nilai.*')
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
