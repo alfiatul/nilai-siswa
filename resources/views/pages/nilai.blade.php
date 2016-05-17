@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
 
     <div id="List">
@@ -364,10 +364,10 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/nilai/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/nilai/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='siswa']").val(data_edit.siswa.nama);
@@ -424,10 +424,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/nilai/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/nilai/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
                         window.alert(data.result.message);
@@ -511,17 +511,18 @@
         var term = $("#search").val();
         var kelas = $("select[name='kelas']").val();
         var mapel = $("select[name='mapel']").val();
-        if (kelas == '' || kelas == null) {
+
+        if (kelas == '' && mapel == '') {
+            var url = "/api/v1/nilai?page=" + page + "&term=" + term;
+        }
+        else if (kelas == '') {
             var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&mapel=" + mapel;
         }
-        else if (mapel == '' || mapel == null) {
+        else if (mapel == '') {
             var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas;
         }
         else if (mapel != '' && kelas != '') {
             var url = "/api/v1/nilai?page=" + page + "&term=" + term + "&kelas=" + kelas + "&mapel=" + mapel;
-        }
-        else {
-            var url = "/api/v1/nilai?page=" + page + "&term=" + term;
         }
         $("#loader2").delay(2000).animate({
             opacity: 0,

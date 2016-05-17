@@ -12,7 +12,7 @@
 {{--<h2><span class="fa fa-arrow-circle-o-left"></span> Siswa</h2>--}}
 {{--</div>--}}
 
-<!-- PAGE CONTENT WRAPPER -->
+        <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap" style="min-height: 600px;">
     <div id="Alert">
 
@@ -181,7 +181,7 @@
                                     <label class="col-md-3 control-label">Nis:</label>
 
                                     <div class="col-md-6">
-                                        <input type="text" name="nis"
+                                        <input type="text" name="nis" id="nis"
                                                class="validate[required,maxSize[8]] form-control"/>
                                     </div>
                                 </div>
@@ -366,7 +366,7 @@
                     $("#Alert").append("<div class='alert alert-success' role='alert'>" +
                             "<button type='button' class='close' data-dismiss='alert'>" +
                             "<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>" +
-                            "Data Berhasil Disimpan </div>"
+                            "Data Berhasil Diubah </div>"
                     );
                 },
                 error: function (data) {
@@ -400,13 +400,14 @@
         document.getElementById("Form-Create").reset();
         document.getElementById("Form-Edit").reset();
         $.ajax({
-            method: "Get",
-            url: '/api/v1/siswa/' + id,
-            data: {}
-        })
+                    method: "Get",
+                    url: '/api/v1/siswa/' + id,
+                    data: {}
+                })
                 .done(function (data_edit) {
                     $("input[name='id']").val(data_edit.id);
                     $("input[name='nis']").val(data_edit.nis);
+                    $("#nis").keydown(false);
                     $("input[name='nama']").val(data_edit.nama);
                     $("input[name='alamat']").val(data_edit.alamat);
                     $("input[name='agama']").val(data_edit.agama);
@@ -486,10 +487,10 @@
         var result = confirm("Apakah Anda Yakin Ingin Menghapus ?");
         if (result) {
             $.ajax({
-                method: "DELETE",
-                url: '/api/v1/siswa/' + id,
-                data: {}
-            })
+                        method: "DELETE",
+                        url: '/api/v1/siswa/' + id,
+                        data: {}
+                    })
 
                     .done(function (data) {
 //                        window.alert(data.result.message);

@@ -32,9 +32,9 @@ Route::get('/mapel', function () {
 Route::get('/jurusan', function () {
     return view('pages.jurusan');
 });
-Route::get('/nilai', function () {
-    return view('pages.nilai');
-});
+//Route::get('/nilai', function () {
+//    return view('pages.nilai');
+//});
 
 Route::group(['prefix' => 'api/v1'], function () {
     Route::resource('guru', 'GuruController');

@@ -38,7 +38,7 @@
         <a href="jurusan"><span class="fa fa-files-o"></span><span class="xn-text">Kompetensi Keahlian</span></a>
     </li>
     <li>
-        <a href="nilai"><span class="fa fa-files-o"></span><span class="xn-text">Nilai Siswa</span></a>
+        {{--<a href="nilai"><span class="fa fa-files-o"></span><span class="xn-text">Nilai Siswa</span></a>--}}
     </li>
 
 </ul>

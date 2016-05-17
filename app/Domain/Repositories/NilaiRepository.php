@@ -168,6 +168,28 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
                 ->toArray();
+        } else if ($search == 'Remidi' || $search == 'remidi') {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mapel', 'nilai.id_mapel', '=', 'mapel.id')
+//                ->where('siswa.id_kelas', $kelas)
+//                ->where('mapel.id', $mapel)
+                ->where('nilai.n_akhir', '<', 75)
+                ->select('nilai.*')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else if ($search == 'Lulus' || $search == 'lulus') {
+            $organisasi = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mapel', 'nilai.id_mapel', '=', 'mapel.id')
+//                ->where('siswa.id_kelas', $kelas)
+//                ->where('mapel.id', $mapel)
+                ->where('nilai.n_akhir', '>=', 75)
+                ->select('nilai.*')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
         } else {
             $organisasi = $this->model
                 ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
@@ -204,6 +226,30 @@ class NilaiRepository extends AbstractRepository implements Crudable, Paginable
                 ->where('siswa.id_kelas', $id->id_kelas)
                 ->where('nilai.id_mapel', $id->id_mapel)
                 ->where('mengajar.id', $id->id)
+                ->select('nilai.*', 'mengajar.id_guru')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else if ($search == 'Remidi' || $search == 'remidi') {
+            $data = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mengajar', 'nilai.id_mapel', '=', 'mengajar.id_mapel')
+                ->where('siswa.id_kelas', $id->id_kelas)
+                ->where('nilai.id_mapel', $id->id_mapel)
+                ->where('mengajar.id', $id->id)
+                ->where('nilai.n_akhir', '<', 75)
+                ->select('nilai.*', 'mengajar.id_guru')
+                ->orderBy('siswa.nama', 'asc')
+                ->paginate($limit)
+                ->toArray();
+        } else if ($search == 'Lulus' || $search == 'lulus') {
+            $data = $this->model
+                ->join('siswa', 'nilai.id_siswa', '=', 'siswa.id')
+                ->join('mengajar', 'nilai.id_mapel', '=', 'mengajar.id_mapel')
+                ->where('siswa.id_kelas', $id->id_kelas)
+                ->where('nilai.id_mapel', $id->id_mapel)
+                ->where('mengajar.id', $id->id)
+                ->where('nilai.n_akhir', '>=', 75)
                 ->select('nilai.*', 'mengajar.id_guru')
                 ->orderBy('siswa.nama', 'asc')
                 ->paginate($limit)
